@@ -1,0 +1,7 @@
+---
+title: "Perception Data Analysis"
+author: "M2 Stat optional class Analyse de données de Perception"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
