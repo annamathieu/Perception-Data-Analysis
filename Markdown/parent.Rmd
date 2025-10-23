@@ -2,6 +2,61 @@
 title: "Perception Data Analysis"
 author: "M2 Stat optional class Analyse de données de Perception"
 date: "`r Sys.Date()`"
-output: html_document
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+    number_sections: true
+    toc_float: true
+    self_contained: true
+    df_print: paged
+    highlight: tango
+    theme:
+      version: 4
+      bootswatch: flatly
+      bg: aliceblue
+      fg: '#000000'
+      primary: '#F2186E'
+      base_font: Lato
+      heading_font: Playfair Display
+      code_font: Fira Code
+    tabset: true
+  pdf_document:
+    toc: true
+    toc_depth: 2
+    number_sections: true
+    highlight: tango
+    latex_engine: xelatex
+    fig_caption: true
+    fig_width: 6
+    fig_height: 4
+    keep_tex: false
+  word_document:
+    toc: true
+    toc_depth: 2
 ---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = F, warning = F, fig.height=3, fig.width=4)
+```
+
+
+```{r, include = FALSE}
+sections.path <- file.path(rprojroot::find_root("Perception-Data-Analysis.Rproj"),
+                           "Markdown",
+                           "sections")
+r.files.vec <- list.files(sections.path)
+r.files.vec <- r.files.vec[grepl(".Rmd", r.files.vec)]
+```
+
+# Seance 1
+```{r child = 'sections/cours1.Rmd'}
+
+```
+
+# Seance 2 
+```{r child = 'sections/cours2.Rmd'}
+
+```
 
