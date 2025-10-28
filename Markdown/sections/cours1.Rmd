@@ -5,10 +5,23 @@ date: "`r Sys.Date()`"
 output: html_document
 ---
 ## Introduction
-
 Nous partons d’un **ensemble de stimuli** (par exemple, des assertions, des produits, des échantillons ou des images) qui ont été **conçus selon certains facteurs de variabilité** — c’est ce que l’on appelle la **planification expérimentale**.  
-Chaque dimension de ces stimuli peut correspondre à différents **niveaux de difficulté ou d’intensité** (par exemple : *facile*, *moyen*, *difficile*).
+Chaque dimension de ces stimuli peut correspondre à différents **niveaux de difficulté ou d’intensité** (par exemple : *facile*, *moyen*, *difficile*).  
 
+Pour ce cours, notre étude ne portera pas sur la perception d'un produit, mais sur celle des "Atomic Habits" : de petites habitudes visant un impact environnemental significatif.
+
+Nous avons d'abord établi une liste de 14 assertions. Chaque assertion est une phrase qui explicite une habitude spécifique ainsi que les contraintes ou contreparties associées à son adoption.
+
+Exemple d'assertion : Je consomme uniquement des produits alimentaires de saison, ce qui peut impliquer de renoncer, à la maison comme au restaurant, aux fruits, légumes ou poissons hors saison (par exemple, les agrumes en été ou les tomates en hiver), etc.
+
+## Definition de la mesure
+Une fois les assertions définies, la question centrale était de déterminer la méthode de mesure : Quelle question poser aux consommateurs ? De plus, nous devions décider si les assertions devaient être considérées individuellement ou comme un ensemble.
+
+Nous avons choisi d'analyser les assertions comme un ensemble. Ce choix s'est avéré pertinent car pour obtenir un classement (ranking), les consommateurs devaient évaluer tous les stimuli simultanément.
+
+La question finale posée aux consommateurs est donc la suivante :
+
+“Classer les habitudes suivantes en fonction de celles que vous pensez être capables de tenir sur le long terme pour significativement réduire votre impact sur l’environnement.”
 ---
 
 ## Classement des stimuli
@@ -22,9 +35,12 @@ On obtient alors une **table de données** dont la structure est la suivante :
 
 Ces notes représentent une **mesure de préférence relative** : plus la note est faible, plus l'assertion (le produit) est proche de l’**idéal** du consommateur.
 
+
 ---
 
 ## Représentation dans l’espace des produits
+
+L'avantage avec cette notion de classement c'est que l'on tend vers un idéal. On veut représenter le consommateur dans l'espace produit à travers son idéal. 
 
 L’objectif est de représenter simultanément :
 
@@ -44,6 +60,8 @@ Une **analyse en correspondances (AC)** peut être utilisée pour projeter ces i
 
 Ainsi, on peut visualiser **quelles assertions (ou produit) sont perçues comme proches des idéaux** des consommateurs.  
 Le **plan factoriel** qui en résulte permet d’identifier des **clusters** ou **concepts perceptifs** (groupes de produits ou de préférences similaires).
+
+Si un ideal est proche d'une assertions alors cette assertions est importante pour l'idéal. 
 
 ---
 
