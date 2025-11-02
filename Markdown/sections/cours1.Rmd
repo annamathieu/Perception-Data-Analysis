@@ -8,7 +8,7 @@ output: html_document
 Nous partons d’un **ensemble de stimuli** (par exemple, des assertions, des produits, des échantillons ou des images) qui ont été **conçus selon certains facteurs de variabilité** — c’est ce que l’on appelle la **planification expérimentale**.  
 Chaque dimension de ces stimuli peut correspondre à différents **niveaux de difficulté ou d’intensité** (par exemple : *facile*, *moyen*, *difficile*).  
 
-Pour ce cours, notre étude ne portera pas sur la perception d'un produit, mais sur celle des "Atomic Habits" : de petites habitudes visant un impact environnemental significatif.
+Pour ce cours, notre étude ne portera pas sur la perception d'un produit, mais sur celle des "Atomic Habits" (un concept popularisé par James Clear dans son livre éponyme) : de petites habitudes visant un impact environnemental significatif.
 
 Nous avons d'abord établi une liste de 14 assertions. Chaque assertion est une phrase qui explicite une habitude spécifique ainsi que les contraintes ou contreparties associées à son adoption.
 
@@ -48,7 +48,9 @@ L’objectif est de représenter simultanément :
 
 - les **stimuli** (les assertions/les produits)  
 
-dans un **même espace perceptif**.
+dans un **même espace perceptif**. 
+
+L'intérêt de projeter dans le même espace est d'avoir la distance perceptuelle entre un idéal consommateur et un ensemble de stimuli.
 
 Une **analyse en correspondances (AC)** peut être utilisée pour projeter ces informations. Chaque **stimulus** y apparaît comme un **point** et les **consommateurs** sont positionnés autour selon la proximité de leurs préférences.
 
@@ -61,7 +63,7 @@ Une **analyse en correspondances (AC)** peut être utilisée pour projeter ces i
 Ainsi, on peut visualiser **quelles assertions (ou produit) sont perçues comme proches des idéaux** des consommateurs.  
 Le **plan factoriel** qui en résulte permet d’identifier des **clusters** ou **concepts perceptifs** (groupes de produits ou de préférences similaires).
 
-Si un ideal est proche d'une assertions alors cette assertions est importante pour l'idéal. 
+Si un ideal est proche d'une assertion alors cette assertion est importante pour l'idéal. 
 
 ---
 
@@ -94,5 +96,5 @@ Elle cherche une configuration spatiale où les distances entre les points repro
 
 L’**unfolding** (ou **préférence unfolding**) est un **cas particulier de MDS**, dans lequel les données sont **incomplètes ou asymétriques** — typiquement lorsque tous les consommateurs n’évaluent pas tous les produits.
 
-Le résultat est une **carte perceptive** qui représente l’ensemble des **distances entre consommateurs et stimuli**, permettant une visualisation claire des **proximité et différences perçues**.
+Le résultat est une **carte perceptive** qui représente l’ensemble des **distances entre consommateurs et stimuli**, permettant une visualisation claire des **proximités et différences perçues**.
 
