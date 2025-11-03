@@ -60,3 +60,26 @@ points_moyens_sentiment <- aggregate(
 ## Description de notre graphique
 
 # Profil idéal
+
+Un profil sensoriel c'est un ensemble de caractéristiques évaluées par nos sens. 
+
+Pour créer un profil idéal, on réunit un panel de consommateurs qui vont évaluer des produits sur des descripteurs. En plus de ces descripterus il leur ai demandé de données une note d'appréciation hédonique et de remplir un profil idéal pour le produit. 
+
+La première étape dans ce cas est de regarder la consitence de notre jeu de données. 
+
+Le bloc de données le plus fragile est le bloc du profil idéal car c'est très très subjectif. 
+
+## Première vérification consistence des juges 
+
+Un idéal sous entend que l'on préfère l'idéal au produit présenté. On peut verifier celà en faisant pour chaque individus un modèle de prédiction de liking. L'utiliser pour estimer la note attribué à ses profils idéaux et regarder si ces notes sont meilleurs que celle de la réalité. 
+
+## Deuxième verification consistence sensorielle 
+
+L'avantage dans la méthode du profil idéal c'est qu'à l'inverse du préférence mapping, les profils sensoriels et les données hédonique sont appareillées. 
+
+
+## Troisième verification corrélation
+
+
+
+# Profil idéal exemple des politiques publiques
