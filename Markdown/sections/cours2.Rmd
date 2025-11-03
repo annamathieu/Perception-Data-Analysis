@@ -4,3 +4,59 @@ author: "M2 Stat optional class Analyse de données de Perception"
 date: "`r Sys.Date()`"
 output: html_document
 ---
+
+# Unfolding 
+## Rappel sur les données d'unfolding 
+
+Le point de départ c'est un jeux de données avec en ligne les individus, en colonne les stimuli et au croisement des lignes et des colonnes le classement / le rang attribué par l'individus au stimuli.  
+
+Dans ce jeu de données, chaque ligne est une distance à un idéal.
+
+L'objectif de l'unfolding c'est de représenter dans un même espace les idéaux des individus et les assertions. Sur cette espace on a donc les coordonnées des idéaux.  
+
+Le but de l'unfolding va être de minimiser la différence entre nos distance observées (les lignes de notre tableau de données ) et nos distances estimée (les coordonnées des points sur notre graphique). Pour faire celà on va avoir besoin d'une déscente de gradient. 
+
+La question se pose de comment on passe de rang à distance. Il expiste plein de métrique différents, mais on peut très simplement dire que le premier à une distance de 1, que le deuxième une distance de deux et ainsi de suite. 
+
+## Notre jeu de données 
+
+Le jeux de données que nous avons ne correspond pas à des données d'unfolding, la structure n'est pas la bonne.   
+En colonne nous avons le rang, en ligne l'individus et au croisement le rang.   
+Pour pouvoir utiliser le package smacof et réaliser l'unfoldinf, il nous faut en colonne le rang et au croisement entre individus et rang l'assertions. 
+
+Pour faire celà, il faut trier pour chaque ligne les assertions par ordre alphabétique et récupérer les rangs correspondants. 
+
+Chaque groupe à réaliser celà d'une manière différente : 
+
+
+
+Le package *smacof* permet de réaliser l'unfolding. Il faut utiliser la fonction unfolding. 
+
+La limite de ce package est qu'il ne prend pas en compte les variables supplémentaire. Il faut donc ruser pour améliorer notre graphique et y rajouter les variables supplémentaire. 
+
+Pour ce faire on fait un tableau de données intermédiaire ou on fait correspondre les coordonnées de chaque indivuds et les valeurs prise par les variable supplémentaire. Ensuite on calcul par modalité de chacune des variables supplémentaire le barycentre. 
+
+```{r}
+supw <- cbind(sup,un_folding$conf.row[2:47,])
+supw[,1]<-as.factor(supw[,1])
+supw[,2]<-as.factor(supw[,2])
+supw[,3]<-as.factor(supw[,3])
+summary(supw)
+
+
+points_moyens_responsabilite <- aggregate(
+  x = supw[, c("D1", "D2")], # Les variables sur lesquelles calculer la moyenne
+  by = list(Responsabilite = supw$Responsabilite), # La variable de regroupement
+  FUN = mean # La fonction à appliquer (la moyenne)
+)
+
+points_moyens_sentiment <- aggregate(
+  x = supw[, c("D1", "D2")], # Les variables sur lesquelles calculer la moyenne
+  by = list(Sentiment = supw$Sentiment), # La variable de regroupement
+  FUN = mean # La fonction à appliquer (la moyenne)
+)
+```
+
+## Description de notre graphique
+
+# Profil idéal
