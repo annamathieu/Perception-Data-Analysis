@@ -177,6 +177,49 @@ L'avantage dans la méthode du profil idéal c'est qu'à l'inverse du préféren
 
 # Profil idéal exemple des politiques publiques
 
+## Adaptation de la méthode à ce nouvel exemple
 On essaie d'adopter la méthodologie de profil idéal à un tout autre sujet, les politiques publiques. Il faut transformer les différents éléments et les adapter à ce sujet : 
 
-- 
+- Que seront les produits pour des PP?
+les produits seront des propositions de loi. 
+On veut un espace des produits le plus varié possible (logique du plan expérimental) donc on établi des facteurs expérimentaux représentant un espace de produit le plus varié possible. 
+Ces facteurs expérimentaux sont : le facteur économique (modèle économique), le facteur de budget (financement) et le facteur sociétal (valeurs). Chacun de ces facteurs prend 2 modalités. 
+
+Pour le facteur économique: libéral ou communiste
+Pour le facteur financier: rigoriste ou priorité à l'investissement
+Pour le facteur de valeurs: traditionnel ou plus moderne 
+
+
+- Que seront les attributs sensoriels pour des PP? 
+les attributs sensoriels sont des mesures sur les propositions de loi. 
+Voici quelques exemples de mesures: à quel point cette mesure appose une forte pression fiscale sur les entreprises (échelle quanti de 1 à 10 par exemple), à quel point cette mesure priorise le soutien social, à quel point cette mesure priorise la compétitivité des entreprises, la réduction de la dette publique, etc....
+
+- Que sera le jugement hédonique pour des PP?
+Dans cet exemple, le jugement hédonique d'une proposition de loi est la propotion de la volonté d'un élu à voter en faveur de l'adoption de cette politique publique, par exemple sur une échelle numérique, de 1 à 10 (1 = pas du tout prêt à voter en faveur, 10 = totalement prêt à voter en faveur de cette mesure)
+
+- Quels seront les profils idéaux pour les PP? 
+les profils idéaux sont les apports à faire aux propositions de loi (d'un point de vue de la mesure) pour qu'il maximisent l'appréciation hédonique. On veut voir comment il faut que les propositions de loi soient améliorées pour augmenter la propension à voter en faveur la proposition de loi.
+
+## Définition des produits 
+
+Plan expérimental : 
+
+prop n°   F1 F2 F3 
+1         -1 -1 -1  
+2         -1 -1 +1
+3         -1 +1 -1
+4         -1 +1 +1
+5         +1 -1 -1
+6         +1 -1 +1
+7         +1 +1 -1
+8         +1 +1 +1
+
+Exemples de propositions de loi correspondant à ce plan expérimental :
+1- 
+2- 
+3- 
+4- 
+5- 
+6- 
+7- 
+8- 
