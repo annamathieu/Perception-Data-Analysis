@@ -57,13 +57,19 @@ points_moyens_sentiment <- aggregate(
 )
 ```
 
+
+
 ## Description de notre graphique
+
+
+
+
 
 # Profil idéal
 
-Un profil sensoriel c'est un ensemble de caractéristiques évaluées par nos sens. 
+Un profil sensoriel c'est un ensemble de caractéristiques évaluées par nos sens. Un profil idéal est un profil particulier: un ensemble de caractéristiques qui maximisent le liking (appréciation hédonique) d'un produit (ou autre objet étudié).
 
-Pour créer un profil idéal, on réunit un panel de consommateurs qui vont évaluer des produits sur des descripteurs. En plus de ces descripterus il leur ai demandé de données une note d'appréciation hédonique et de remplir un profil idéal pour le produit. 
+Pour créer un profil idéal, on réunit un panel de consommateurs qui vont évaluer des produits sur des descripteurs. En plus de ces descripteus il leur est demandé de donner une note d'appréciation hédonique et de remplir un profil idéal pour le produit. Ce profil idéal correspond au niveau idéal d'un descripteur pour un consommateur. Un consommateur peut avoir un, ou plusieurs idéaux.  
 
 La première étape dans ce cas est de regarder la consitence de notre jeu de données. 
 
@@ -79,6 +85,9 @@ L'avantage dans la méthode du profil idéal c'est qu'à l'inverse du préféren
 
 
 ## Troisième verification corrélation
+
+
+## Interprétation du graphique 
 
 
 
