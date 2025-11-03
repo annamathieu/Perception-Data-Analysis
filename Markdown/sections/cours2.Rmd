@@ -69,11 +69,20 @@ points_moyens_sentiment <- aggregate(
 
 Un profil sensoriel c'est un ensemble de caractéristiques évaluées par nos sens. Un profil idéal est un profil particulier: un ensemble de caractéristiques qui maximisent le liking (appréciation hédonique) d'un produit (ou autre objet étudié).
 
-Pour créer un profil idéal, on réunit un panel de consommateurs qui vont évaluer des produits sur des descripteurs. En plus de ces descripteus il leur est demandé de donner une note d'appréciation hédonique et de remplir un profil idéal pour le produit. Ce profil idéal correspond au niveau idéal d'un descripteur pour un consommateur. Un consommateur peut avoir un, ou plusieurs idéaux.  
+Pour créer un profil idéal, on réunit un panel de consommateurs qui vont évaluer des produits sur des descripteurs. En plus de ces descripteurs il leur est demandé de donner une note d'appréciation hédonique et de remplir un profil idéal pour le produit. Ce profil idéal correspond au niveau idéal d'un descripteur pour un consommateur. Un consommateur peut avoir un, ou plusieurs idéaux.  
 
-La première étape dans ce cas est de regarder la consitence de notre jeu de données. 
+La première étape dans ce cas est de regarder la consistence de notre jeu de données. 
 
-Le bloc de données le plus fragile est le bloc du profil idéal car c'est très très subjectif. 
+Le bloc de données le plus fragile est le bloc du profil idéal car c'est très très subjectif. En effet, le consommateur a évalué d'une part : 
+- les profils sensoriels des produits : attributs sensoriels sur des produits physiques
+- son appréciation hédonique de chacun de ces produits : réponse spontanée à un instant T sur un produit présenté
+- évaluation des profils idéaux : le niveau que devrait prendre l'attribut sensoriel pour atteindre le niveau idéal pour ce consommateur, donc ces mesures sont réalisées à partir de produits imaginaires et sont très subjectives.
+
+De plus, on ne connait pas l'appréciation hédonique perçue par le consommateur d'un produit qui correspondrait à ce profil idéal. 
+
+Il faut que l'appréciation du produit idéal dépasse l'appréciation des produits évalués car les produits idéaux maximisent le liking.
+
+
 
 ## Première vérification consistence des juges 
 
