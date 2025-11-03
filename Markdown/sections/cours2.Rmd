@@ -28,6 +28,13 @@ Pour faire celà, il faut trier pour chaque ligne les assertions par ordre alpha
 
 Chaque groupe à réaliser celà d'une manière différente : 
 
+```{r}
+# proposition : 
+
+
+```
+
+
 
 
 Le package *smacof* permet de réaliser l'unfolding. Il faut utiliser la fonction unfolding. 
@@ -57,6 +64,76 @@ points_moyens_sentiment <- aggregate(
 )
 ```
 
+```{r}
+# Ajouter de la data illustrative 
+illus <- atomic[,c(1,20:21)]
+names(illus)[2:3] <- c("Responsabilite_env", "Sentiment_env")  
+
+illus[,1:3] <- lapply(illus, as.factor)
+
+levels(illus$Responsabilite_env) <- c("pas_du_tout_responsable", "peu_responsable", "moy_responsable", "responsable", "tres_responsable")
+
+# nrow(illus)
+# nrow(group1)
+
+new_data <- cbind(as.data.frame(unfolded$conf.row[-1,]), illus[,-1])
+```
+
+Création du graph 
+=> construit à partir des profils idéaux 
+```{r}
+assertions_long <- names(resultat)
+
+fig <- plot_ly() %>%
+  
+  # Individus
+  add_trace(data = conf_ind,
+            x = ~D1, y = ~D2,
+            type = 'scatter', mode = 'markers',
+            marker = list(color = 'black', size = 5),
+            name = 'Individus') %>%
+  
+  # Assertions
+  add_trace(data = conf_assertions,
+            x = ~D1, y = ~D2,
+            type = 'scatter', mode = 'markers+text',
+            marker = list(color = 'cadetblue', size = 5),
+            text = ~rownames(conf_assertions),
+            textfont = list(color = 'cadetblue'),
+            textposition = 'top center',
+            hovertext = ~assertions_long,  # texte au survol
+            hoverinfo = 'text',
+            name = 'Assertions') %>%
+  
+  # Responsabilité environnementale
+  add_trace(data = points_moyens_responsabilite,
+            x = ~D1, y = ~D2,
+            type = 'scatter', mode = 'markers+text',
+            marker = list(color = 'red', size = 5),
+            text = ~levels(illus$Responsabilite_env),
+            textfont = list(color = 'red'),
+            textposition = 'top center',
+            name = 'Responsabilité') %>%
+  
+  # Sentiment environnemental
+  add_trace(data = points_moyens_sentiment,
+            x = ~D1, y = ~D2,
+            type = 'scatter', mode = 'markers+text',
+            marker = list(color = 'green', size = 5),
+            text = ~levels(illus$Sentiment_env)[-1],
+            textfont = list(color = 'green'),
+            textposition = 'top center',
+            name = 'Sentiment') %>%
+  
+
+  layout(title = list(text = "Unfolding Configuration", x = 0.5),
+         xaxis = list(title = ""),
+         yaxis = list(title = ""),
+         plot_bgcolor = 'rgb(242, 242, 242)',
+         showlegend = TRUE)
+
+fig
+```
 
 
 ## Description de notre graphique
@@ -96,8 +173,10 @@ L'avantage dans la méthode du profil idéal c'est qu'à l'inverse du préféren
 ## Troisième verification corrélation
 
 
-## Interprétation du graphique 
-
 
 
 # Profil idéal exemple des politiques publiques
+
+On essaie d'adopter la méthodologie de profil idéal à un tout autre sujet, les politiques publiques. Il faut transformer les différents éléments et les adapter à ce sujet : 
+
+- 
