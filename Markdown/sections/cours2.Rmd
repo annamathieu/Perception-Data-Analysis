@@ -12,21 +12,21 @@ Le point de départ c'est un jeux de données avec en ligne les individus, en co
 
 Dans ce jeu de données, chaque ligne est une distance à un idéal.
 
-L'objectif de l'unfolding c'est de représenter dans un même espace les idéaux des individus et les assertions. Sur cette espace on a donc les coordonnées des idéaux.  
+L'objectif de l'unfolding c'est de représenter dans un même espace les idéaux des individus et les assertions. Sur cet espace on a donc les coordonnées des idéaux.  
 
-Le but de l'unfolding va être de minimiser la différence entre nos distance observées (les lignes de notre tableau de données ) et nos distances estimée (les coordonnées des points sur notre graphique). Pour faire celà on va avoir besoin d'une déscente de gradient. 
+Le but de l'unfolding va être de minimiser la différence entre nos distance observées (les lignes de notre tableau de données ) et nos distances estimées (les coordonnées des points sur notre graphique). Pour faire cela on va avoir besoin d'une descente de gradient. Cet algorithme dérive les coordonnées x et y jusqu'à converger de façon à ce que le stress soit le plus petit possible.
 
-La question se pose de comment on passe de rang à distance. Il expiste plein de métrique différents, mais on peut très simplement dire que le premier à une distance de 1, que le deuxième une distance de deux et ainsi de suite. 
+La question se pose de comment on passe de rang à distance. Il expiste plein de métriques différents, mais on peut très simplement dire que le premier a une distance de 1, que le deuxième a une distance de deux et ainsi de suite. 
 
 ## Notre jeu de données 
 
 Le jeux de données que nous avons ne correspond pas à des données d'unfolding, la structure n'est pas la bonne.   
-En colonne nous avons le rang, en ligne l'individus et au croisement le rang.   
-Pour pouvoir utiliser le package smacof et réaliser l'unfoldinf, il nous faut en colonne le rang et au croisement entre individus et rang l'assertions. 
+En colonne nous avons les stimuli, en ligne l'individu et au croisement le rang.   
+Pour pouvoir utiliser le package smacof et réaliser l'unfolding, il nous faut en colonne les rangs et au croisement entre individus et rangs, l'assertion. 
 
-Pour faire celà, il faut trier pour chaque ligne les assertions par ordre alphabétique et récupérer les rangs correspondants. 
+Pour faire cela, il faut trier pour chaque ligne les assertions par ordre alphabétique et récupérer les rangs correspondants. 
 
-Chaque groupe à réaliser celà d'une manière différente : 
+Chaque groupe a réalisé cela d'une manière différente : 
 
 ```{r}
 # proposition : 
@@ -39,9 +39,9 @@ Chaque groupe à réaliser celà d'une manière différente :
 
 Le package *smacof* permet de réaliser l'unfolding. Il faut utiliser la fonction unfolding. 
 
-La limite de ce package est qu'il ne prend pas en compte les variables supplémentaire. Il faut donc ruser pour améliorer notre graphique et y rajouter les variables supplémentaire. 
+La limite de ce package est qu'il ne prend pas en compte les variables supplémentaires. Il faut donc ruser pour améliorer notre graphique et y rajouter les variables supplémentaires. 
 
-Pour ce faire on fait un tableau de données intermédiaire ou on fait correspondre les coordonnées de chaque indivuds et les valeurs prise par les variable supplémentaire. Ensuite on calcul par modalité de chacune des variables supplémentaire le barycentre. 
+Pour ce faire on fait un tableau de données intermédiaire ou on fait correspondre les coordonnées de chaque individu et les valeurs prises par les variables supplémentaires. Ensuite on calcule par modalité de chacune des variables supplémentaires le barycentre. 
 
 ```{r}
 supw <- cbind(sup,un_folding$conf.row[2:47,])
@@ -160,14 +160,13 @@ De plus, on ne connait pas l'appréciation hédonique perçue par le consommateu
 Il faut que l'appréciation du produit idéal dépasse l'appréciation des produits évalués car les produits idéaux maximisent le liking.
 
 
+## Première vérification consistence hédonique
 
-## Première vérification consistence des juges 
-
-Un idéal sous entend que l'on préfère l'idéal au produit présenté. On peut verifier celà en faisant pour chaque individus un modèle de prédiction de liking. L'utiliser pour estimer la note attribué à ses profils idéaux et regarder si ces notes sont meilleurs que celle de la réalité. 
+Un idéal sous entend que l'on préfère l'idéal au produit présenté. On peut verifier cela en faisant pour chaque individu un modèle de prédiction de liking, l'utiliser pour estimer la note attribuée à ses profils idéaux et regarder si ces notes sont meilleures que celles de la réalité. 
 
 ## Deuxième verification consistence sensorielle 
 
-L'avantage dans la méthode du profil idéal c'est qu'à l'inverse du préférence mapping, les profils sensoriels et les données hédonique sont appareillées. 
+L'avantage dans la méthode du profil idéal c'est qu'à l'inverse du préférence mapping, les profils sensoriels et les données hédonique sont appareillées. On aimerait que la note des descripteurs de l'idéal et de l'observé aillent dans le même sens par rapport à l'hédonique. (si un produit est très apprécié lorsqu'il est sucré, que l'idéal le soit aussi)
 
 
 ## Troisième verification corrélation
@@ -182,12 +181,12 @@ On essaie d'adopter la méthodologie de profil idéal à un tout autre sujet, le
 
 - Que seront les produits pour des PP?
 les produits seront des propositions de loi. 
-On veut un espace des produits le plus varié possible (logique du plan expérimental) donc on établi des facteurs expérimentaux représentant un espace de produit le plus varié possible. 
+On veut un espace des produits le plus varié possible (logique du plan expérimental) donc on établit des facteurs expérimentaux représentant un espace de produit le plus varié possible. 
 Ces facteurs expérimentaux sont : le facteur économique (modèle économique), le facteur de budget (financement) et le facteur sociétal (valeurs). Chacun de ces facteurs prend 2 modalités. 
 
 Pour le facteur économique: libéral ou communiste
-Pour le facteur financier: rigoriste ou priorité à l'investissement
-Pour le facteur de valeurs: traditionnel ou plus moderne 
+Pour le facteur financier: rigoriste (priorité à l'équilibre) ou priorité à l'investissement
+Pour le facteur de valeurs:  socio-économique traditionnel ou plus moderne (fortes contraintes écologiques)
 
 
 - Que seront les attributs sensoriels pour des PP? 
