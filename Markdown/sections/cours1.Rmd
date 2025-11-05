@@ -51,6 +51,8 @@ L’objectif est de représenter simultanément :
 
 dans un **même espace perceptif**.
 
+En effet, les données de ranking sont lignes-dépendantes et l'ordre entre les stimuli n'est défini qu'à l'intérieur d'une ligne. Un individu va donc correspondre à un ordonnancement des assertions, et donc plus fondamentalement, les individus sont représentés à travers leurs idéaux, un idéal représentant une vision de la réalité.
+
 L'intérêt de projeter dans le même espace est d'avoir la distance perceptuelle entre un idéal consommateur et un ensemble de stimuli.
 
 Une **analyse en correspondances (AC)** peut être utilisée pour projeter ces informations. Chaque **stimulus** y apparaît comme un **point** et les **consommateurs** sont positionnés autour selon la proximité de leurs préférences.
@@ -63,6 +65,10 @@ Ainsi, on peut visualiser **quelles assertions (ou produit) sont perçues comme 
 Le **plan factoriel** qui en résulte permet d’identifier des **clusters** ou **concepts perceptifs** (groupes de produits ou de préférences similaires).
 
 Si un ideal est proche d'une assertion alors cette assertion est importante pour l'idéal.
+
+On peut donc comparer les objets virtuels (initialement les individus en ligne) par rapport à toutes les colonnes : proximité ou éloignement entre un idéal et les stimuli et une colonne par rapport à toutes les lignes : proximité ou éloignement entre un stimulus et l'ensemble des idéaux.
+
+On peut identifier des clusters d'idéaux qui se rapprochent, et faire émerger les concepts latents derrière les variables qui permettent de savoir ce qui séparent les différents idéaux.
 
 ------------------------------------------------------------------------
 
@@ -82,7 +88,7 @@ $$
 
 -   Le $\Delta_{ij}$ correspond à la distance entre un individu **i** et un stimuli **j** dans le tableau (par exemple le rang choisi par ce consommateur pour ce stimuli)
 
-L’objectif de l’unfolding est de **trouver la configuration de points** (idéaux et stimulis) qui reproduit le mieux ces distances.\
+L’objectif de l’unfolding est de **trouver la configuration de points** (idéaux et stimulis) qui reproduit le mieux les dissimilarités observées entre les idéaux i et les stimuli j.\
 Pour y parvenir, on utilise une **descente de gradient**, c’est-à-dire une méthode itérative qui ajuste progressivement les positions des points pour **réduire l’écart entre δ et Δ**.
 
 Le **nombre de dimensions** retenu dépend du problème étudié : on peut dériver par rapport aux **coordonnées des lignes et des colonnes**, selon le nombre d’axes que l’on souhaite représenter.
