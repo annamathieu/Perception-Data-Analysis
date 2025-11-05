@@ -171,6 +171,13 @@ L'avantage dans la méthode du profil idéal c'est qu'à l'inverse du préféren
 
 ## Troisième verification corrélation
 
+On peut également regarder les coefficients de corrélation. 
+Tout d’abord, on calcule la corrélation entre les profils sensoriels des produits (tableau de moyennes ajustées) et les notes hédoniques attribués par chaque consommateur. Cela mesure si, pour un consommateur donné, les produits qu’il apprécie le plus sont bien ceux qui possèdent les caractéristiques sensorielles qu’il préfère. 
+Par exemple, un juge a goûté 5 produits, chacun ayant un profil sensoriel, on peut identifier quels types de produits il aime ou n’aime pas. On s’attend alors à ce que les coefficients entre les vrais produits et les notes hédoniques soient très élevés : cela indiquerait une relation cohérente entre les perceptions sensorielles et les préférences exprimées.
+
+
+Ensuite, on calcule une corrélation entre le premier coefficient et les attributs idéaux du consommateur. On cherche alors à savoir si cette logique de préférence est cohérente avec les idéaux déclarés du consommateur. On compare les corrélations observées entre produits et notes (r(y,h)) avec ces profils idéaux (z). Cela permet de mesurer si les tendances observées dans les notations hédoniques sont en accord avec ce que le consommateur dit aimer. 
+Si le coefficient global est élevé, cela veut dire que le consommateur note de manière cohérente : ses préférences hédoniques sont alignées avec ses goûts idéaux.
 
 
 
