@@ -206,25 +206,26 @@ Plan expérimental :
 prop n°   F1 F2 F3 
 1         -1 -1 -1    Libéral – Rigoriste – Traditionnel
 2         -1 -1 +1    Libéral – Rigoriste – Écologique
-3         -1 +1 -1    
-4         -1 +1 +1
-5         +1 -1 -1
-6         +1 -1 +1
-7         +1 +1 -1
-8         +1 +1 +1
+3         -1 +1 -1    Libéral – Investissement – Traditionnel
+4         -1 +1 +1    Libéral – Investissement – Écologique
+5         +1 -1 -1    Communiste - Rigoriste – Traditionnel
+6         +1 -1 +1    Communiste - Rigoriste – Écologique
+7         +1 +1 -1    Communiste – Investissement – Traditionnel
+8         +1 +1 +1    Communiste – Investissement – Écologique
 
 Exemples de propositions de loi correspondant à ce plan expérimental :
 1- Programme de compétitivité et discipline budgétaire, avec réduction progressive des cotisations sociales patronales, stabilisation du niveau de dépenses publiques et simplification des normes pour l’emploi et l’investissement, pour réduire le déficit public et soutenir l'activité par l'offre
 
-2- 
+2- Programme de transition verte par le marché et budget strict :
+Évolution progressive des normes environnementales, mise en place de crédits d’impôts pour innovations bas-carbone accompagnées d'incitations et de redéploiements budgétaires existants
 
-3- 
+3- Grand plan d’investissement dans l’innovation et les infrastructures; Dépenses publiques accrues dans les infrastructures numériques et transport, allègement fiscal ciblé sur les entreprises qui embauchent ou exportent, recours partiel à la dette pour financer la croissance future; pour favoriser croissance, emploi, compétitivité.
 
-4- 
+4- Marché et innovations pour la transition écologique : R&D subventionnée pour l’énergie verte et l’économie circulaire, suppression progressive des subventions aux énergies fossiles, facilité donnée aux entreprises innovantes via des incitations fiscales
 
 5- 
 
-6- 
+6- État planificateur de la transition écologique : régulation forte des secteurs polluants (quotas, interdictions progressives), redirection du budget existant vers rénovation énergétique et transports doux, aides sociales conditionnées à participation à projets écologiques locaux
 
 7- 
 
