@@ -3,30 +3,51 @@ title: "cours2 - cours3"
 author: "M2 Stat optional class Analyse de données de Perception"
 date: "`r Sys.Date()`"
 output: html_document
+editor_options: 
+  markdown: 
+    wrap: 72
 ---
 
-# Unfolding 
-## Rappel sur les données d'unfolding 
+# Unfolding
 
-Le point de départ c'est un jeu de données avec en ligne les individus, en colonne les stimuli et au croisement des lignes et des colonnes le classement / le rang attribué par l'individus au stimuli.  
+## Rappel sur les données d'unfolding
+
+Le point de départ c'est un jeu de données avec en ligne les individus,
+en colonne les stimuli et au croisement des lignes et des colonnes le
+classement / le rang attribué par l'individus au stimuli.
 
 Dans ce jeu de données, chaque ligne est une distance à un idéal.
 
-L'objectif de l'unfolding c'est de représenter dans un même espace les idéaux des individus et les assertions. Sur cet espace on a donc les coordonnées des idéaux.  
+L'objectif de l'unfolding c'est de représenter dans un même espace les
+idéaux des individus et les assertions. Sur cet espace on a donc les
+coordonnées des idéaux.
 
-Le but de l'unfolding va être de minimiser la différence entre nos distance observées (les lignes de notre tableau de données ) et nos distances estimées (les coordonnées des points sur notre graphique). Pour faire cela on va avoir besoin d'une descente de gradient. Cet algorithme dérive les coordonnées x et y jusqu'à converger de façon à ce que le stress soit le plus petit possible.
+Le but de l'unfolding va être de minimiser la différence entre nos
+distance observées (les lignes de notre tableau de données ) et nos
+distances estimées (les coordonnées des points sur notre graphique).
+Pour faire cela on va avoir besoin d'une descente de gradient. Cet
+algorithme dérive les coordonnées x et y jusqu'à converger de façon à ce
+que le stress soit le plus petit possible.
 
-La question se pose de comment on passe de rang à distance. Il expiste plein de métriques différents, mais on peut très simplement dire que le premier a une distance de 1, que le deuxième a une distance de 2 et ainsi de suite. 
+La question se pose de comment on passe de rang à distance. Il expiste
+plein de métriques différents, mais on peut très simplement dire que le
+premier a une distance de 1, que le deuxième a une distance de 2 et
+ainsi de suite.
 
-## Notre jeu de données 
+## Notre jeu de données
 
-Le jeux de données que nous avons ne correspond pas à des données d'unfolding, la structure n'est pas la bonne.   
-En colonne nous avons les stimuli, en ligne l'individu et au croisement le rang.   
-Pour pouvoir utiliser le package smacof et réaliser l'unfolding, il nous faut en colonne les rangs et au croisement entre individus et rangs, l'assertion. 
+Le jeux de données que nous avons ne correspond pas à des données
+d'unfolding, la structure n'est pas la bonne.\
+En colonne nous avons les stimuli, en ligne l'individu et au croisement
+le rang.\
+Pour pouvoir utiliser le package smacof et réaliser l'unfolding, il nous
+faut en colonne les rangs et au croisement entre individus et rangs,
+l'assertion.
 
-Pour faire cela, il faut trier pour chaque ligne les assertions par ordre alphabétique et récupérer les rangs correspondants. 
+Pour faire cela, il faut trier pour chaque ligne les assertions par
+ordre alphabétique et récupérer les rangs correspondants.
 
-Chaque groupe a réalisé cela d'une manière différente : 
+Chaque groupe a réalisé cela d'une manière différente :
 
 ```{r}
 # proposition : 
@@ -34,14 +55,17 @@ Chaque groupe a réalisé cela d'une manière différente :
 
 ```
 
+Le package *smacof* permet de réaliser l'unfolding. Il faut utiliser la
+fonction unfolding.
 
+La limite de ce package est qu'il ne prend pas en compte les variables
+supplémentaires. Il faut donc ruser pour améliorer notre graphique et y
+rajouter les variables supplémentaires.
 
-
-Le package *smacof* permet de réaliser l'unfolding. Il faut utiliser la fonction unfolding. 
-
-La limite de ce package est qu'il ne prend pas en compte les variables supplémentaires. Il faut donc ruser pour améliorer notre graphique et y rajouter les variables supplémentaires. 
-
-Pour ce faire on fait un tableau de données intermédiaire ou on fait correspondre les coordonnées de chaque individu et les valeurs prises par les variables supplémentaires. Ensuite on calcule par modalité de chacune des variables supplémentaires le barycentre. 
+Pour ce faire on fait un tableau de données intermédiaire ou on fait
+correspondre les coordonnées de chaque individu et les valeurs prises
+par les variables supplémentaires. Ensuite on calcule par modalité de
+chacune des variables supplémentaires le barycentre.
 
 ```{r}
 supw <- cbind(sup,un_folding$conf.row[2:47,])
@@ -79,8 +103,8 @@ levels(illus$Responsabilite_env) <- c("pas_du_tout_responsable", "peu_responsabl
 new_data <- cbind(as.data.frame(unfolded$conf.row[-1,]), illus[,-1])
 ```
 
-Création du graph 
-=> construit à partir des profils idéaux 
+Création du graph =\> construit à partir des profils idéaux
+
 ```{r}
 assertions_long <- names(resultat)
 
@@ -135,123 +159,275 @@ fig <- plot_ly() %>%
 fig
 ```
 
-
 ## Description de notre graphique
 
-Ce graphique issu de l'unfolding est construit à partir des individus représentés par leurs idéaux. Les idéaux sont de ce point de vue des stimulis virtuels. Les atomic habits sont des stimulis réels. On veut minimiser la différence entre distance observée (entre un individu et un idéal = entre un idéal et un stimuli) et estimées (entre les stimulis entre eux). On 
-On veut que la distance entre les individus qui ont des idéaux proches soit faible et qu'un individu représenté par son idéal soit proche des stimulis proches de son idéal (ceux qui ont été classé parmi les premiers stimulis pour cet individu). 
+Ce graphique issu de l'unfolding est construit à partir des individus
+représentés par leurs idéaux. Les idéaux sont de ce point de vue des
+stimulis virtuels. Les atomic habits sont des stimulis réels. On veut
+minimiser la différence entre distance observée (entre un individu et un
+idéal = entre un idéal et un stimuli) et estimées (entre les stimulis
+entre eux). On On veut que la distance entre les individus qui ont des
+idéaux proches soit faible et qu'un individu représenté par son idéal
+soit proche des stimulis proches de son idéal (ceux qui ont été classé
+parmi les premiers stimulis pour cet individu).
 
-A partir des données obtenues, on peut dire qu'il semble y avoir plusieurs clusters d'atomic habits : 
-- végétalien , antidéforestation , zéro déchet , circuits courts , seconde main (en haut en gauche)
-- produits saison, chauffage bas (centre) 
-- outil manuels, covoiturage, veille appareils, mobilité douce (bas gauche)
-- sans avion, ia 
+A partir des données obtenues, on peut dire qu'il semble y avoir
+plusieurs clusters d'atomic habits : - végétalien , antidéforestation ,
+zéro déchet , circuits courts , seconde main (en haut en gauche) -
+produits saison, chauffage bas (centre) - outil manuels, covoiturage,
+veille appareils, mobilité douce (bas gauche) - sans avion, ia
 
-Le premier cluster semble rassembler des atomic habits correspondant à des habitudes que des individus se sentant impliqués et responsables de la réduction de leur empreinte environnementale se sentent capable de tenir sur le long terme pour réduire le impact sur l'environnement. En effet, ces habitudes sont des actions choisies, assumées, de choix de modes de vie et de consommation (devenir végétarien, zéro déchet, n'acheter que de la seconde main) et qui relèvent de l'identité des individus. De plus, les modalités 'très responsables' et 'moyennement responsables' se situent de ce même côté du graphique. Ce groupe regroupe ainsi des idéaux de personnes engagées, qui se sentent responsables de leur actions et sont prêtes à de forts changement de leur mode de vie pour réduire leur impact sur l'environnement. 
+Le premier cluster semble rassembler des atomic habits correspondant à
+des habitudes que des individus se sentant impliqués et responsables de
+la réduction de leur empreinte environnementale se sentent capable de
+tenir sur le long terme pour réduire le impact sur l'environnement. En
+effet, ces habitudes sont des actions choisies, assumées, de choix de
+modes de vie et de consommation (devenir végétarien, zéro déchet,
+n'acheter que de la seconde main) et qui relèvent de l'identité des
+individus. De plus, les modalités 'très responsables' et 'moyennement
+responsables' se situent de ce même côté du graphique. Ce groupe
+regroupe ainsi des idéaux de personnes engagées, qui se sentent
+responsables de leur actions et sont prêtes à de forts changement de
+leur mode de vie pour réduire leur impact sur l'environnement.
 
-Le cluster 2 regroupe des atomic habits autour du chauffage (abaisser la température à son domicile) et de la consommation de produits de saison. Ils représentent des individus ne sentant peu concernés par les questions environnementales.  
+Le cluster 2 regroupe des atomic habits autour du chauffage (abaisser la
+température à son domicile) et de la consommation de produits de saison.
+Ils représentent des individus ne sentant peu concernés par les
+questions environnementales.
 
-Le cluster 3 regroupe des atomic habits que l'on pourrait qualifier d'un engagement limité, correspondant à des gestes simples, des adaptations plus faibles ou passives de leur mode de vie : privilégier la mobilité douce, mettre en veille les appareils, privilégier l'usage des outils non électriques, utiliser des systèmes de prêt, etc. Cette idéal est associé à des individus qui se sentent 'peu responsable' de la baisse de leur impact environnental, et qui considèrent avec espoir les transitions environnementales.
+Le cluster 3 regroupe des atomic habits que l'on pourrait qualifier d'un
+engagement limité, correspondant à des gestes simples, des adaptations
+plus faibles ou passives de leur mode de vie : privilégier la mobilité
+douce, mettre en veille les appareils, privilégier l'usage des outils
+non électriques, utiliser des systèmes de prêt, etc. Cette idéal est
+associé à des individus qui se sentent 'peu responsable' de la baisse de
+leur impact environnental, et qui considèrent avec espoir les
+transitions environnementales.
 
-Le cluster 4 regroupant avion et pas d'utilisation d'IA regroupe des idéaux partagés par des individus se sentant 'pas du tout responsables' de leur action pour baisser leur impact environnementales. Ces individus peuvent être qualifiés de détachés, ou résignés, car ils ne sentent pas concernés, et le changement est vécu plus comme une contrainte qu'un choix. 
+Le cluster 4 regroupant avion et pas d'utilisation d'IA regroupe des
+idéaux partagés par des individus se sentant 'pas du tout responsables'
+de leur action pour baisser leur impact environnementales. Ces individus
+peuvent être qualifiés de détachés, ou résignés, car ils ne sentent pas
+concernés, et le changement est vécu plus comme une contrainte qu'un
+choix.
 
+# D'idéal au Profil idéal
 
+Un profil sensoriel c'est un ensemble de caractéristiques évaluées par
+nos sens. Un profil idéal est un profil particulier: un ensemble de
+caractéristiques qui maximisent le liking (appréciation hédonique) d'un
+produit (ou autre objet étudié).
 
+Pour créer un profil idéal, on réunit un panel de consommateurs qui vont
+évaluer des produits sur des descripteurs. En plus de ces descripteurs
+il leur est demandé de donner une note d'appréciation hédonique et de
+remplir un profil idéal pour le produit. Ce profil idéal correspond au
+niveau idéal d'un descripteur pour un consommateur. Un consommateur peut
+avoir un, ou plusieurs idéaux.
 
+Pour comprendre la perception sensorielle d'un produit par le
+consommateur, le consommateur va noter le produit sur différents
+attributs (ex : sucrosité, fondant, croquant...), ce qui va permettre
+d'établir le profil sensoriel de ces produits. Ces mesures sont
+normalement réalisées par des panels entrainés de juges auxquels on ne
+demande pas la préférence (jugement hédonique). Ici, on chercehe à
+comprendre le lien pouvant exister entre profil sensoriel et liking,
+donc avec des données appariés : les jugements hédoniques de mêmes
+produits sont effectués par les mêmes juges les ayant testés et décrits
+ces produits selon les attributs sensoriels.
 
+Afin de tendre vers un produit idéal, on demande au consommateur, pour
+chaque produit, le niveau idéal de l'attribut j pour ce produit. Cela
+permet d'établir les profils idéaux des produits pour chacun des
+consommateurs: qui sont donc les idéaux. Logiquement, le produit idéal
+correspondant par définition au produit donc l'ensemble des
+caractéristiques maximisent l'appréciation par le consommateur, alors le
+liking du produit idéal (avec les caractéristiques données par le
+consommateur) dépassent le liking du produit testé (sinon, cela ne sert
+à rien). Or, on ne connait pas ce liking. De plus, seules l'appréciation
+et les données de profil sensoriel (évoquées plus haut) sont évaluées
+sur des produits physiques. Pour le profil idéal, les données sont
+évaluées sur des produits fictifs, introduisant une grande incertitude
+individuelle et de confiance en ces données, ce qui sera évoqué plus
+bas.
 
-# Profil idéal
+Si on a 5 produits, 12 descripteurs, 10 juges, le tableau est de la
+forme suivante :
 
-Un profil sensoriel c'est un ensemble de caractéristiques évaluées par nos sens. Un profil idéal est un profil particulier: un ensemble de caractéristiques qui maximisent le liking (appréciation hédonique) d'un produit (ou autre objet étudié).
+![Texte
+alternatif](/graphs/df1.png "Tableau de données initial"){width="702"}
 
-Pour créer un profil idéal, on réunit un panel de consommateurs qui vont évaluer des produits sur des descripteurs. En plus de ces descripteurs il leur est demandé de donner une note d'appréciation hédonique et de remplir un profil idéal pour le produit. Ce profil idéal correspond au niveau idéal d'un descripteur pour un consommateur. Un consommateur peut avoir un, ou plusieurs idéaux.  
+Si on a 60 juges et qu'on transforme les données individuelles de
+perception sensorielle en profils sensoriels, alors, la forme du tableau
+de données est la suivante :
 
-La première étape dans ce cas est de regarder la consistence de notre jeu de données. 
+![Texte alternatif](/graphs/df2.png "Tableau de données")
 
-Le bloc de données le plus fragile est le bloc du profil idéal car c'est très très subjectif. En effet, le consommateur a évalué d'une part : 
-- les profils sensoriels des produits : attributs sensoriels sur des produits physiques
-- son appréciation hédonique de chacun de ces produits : réponse spontanée à un instant T sur un produit présenté
-- évaluation des profils idéaux : le niveau que devrait prendre l'attribut sensoriel pour atteindre le niveau idéal pour ce consommateur, donc ces mesures sont réalisées à partir de produits imaginaires et sont très subjectives.
+On peut construire à partir de ce tableau bleu une ACP sur les profils
+idéaux permettant d'obtenir un espace factoriel de représentation des
+idéaux. Les individus sont représentés par leurs idéaux, et on projette
+dans cet espace de profil idéal les produits réels. Si deux points sont
+proches, les deux consommateurs ont des idéaux proches.
 
-De plus, on ne connait pas l'appréciation hédonique perçue par le consommateur d'un produit qui correspondrait à ce profil idéal. 
+Les produits réels sont des individus illustratifs que l'on projette
+comme s'ils étaient des idéaux. Si un individu est proche d'un point
+représentant un produit réel, alors, l'individu a pour idéal un produit
+proche du produit réel.
 
-Il faut que l'appréciation du produit idéal dépasse l'appréciation des produits évalués car les produits idéaux maximisent le liking.
+Les variables sont les descripteurs sensoriels et on projette en
+variable illustratives les notes hédoniques de chaque produit dans le
+cercle des corrélations. La variable se projette dans la direction
+sensorielle d'un idéal. Par exemple, la variable "salé" projetée d'un
+côté du cercle des corrélation, indiquera que les produits se situant
+dans la même direction sur le graphique des individus prennent des notes
+idéales fortes pour le sel. Les individus concernés apprécient les
+produits salés.
 
+La première étape dans ce cas est de regarder la consistence de notre
+jeu de données.
+
+Le bloc de données le plus fragile est le bloc du profil idéal car c'est
+très très subjectif. En effet, le consommateur a évalué d'une part : -
+les profils sensoriels des produits : attributs sensoriels sur des
+produits physiques - son appréciation hédonique de chacun de ces
+produits : réponse spontanée à un instant T sur un produit présenté -
+évaluation des profils idéaux : le niveau que devrait prendre l'attribut
+sensoriel pour atteindre le niveau idéal pour ce consommateur, donc ces
+mesures sont réalisées à partir de produits imaginaires et sont très
+subjectives.
+
+De plus, on ne connait pas l'appréciation hédonique perçue par le
+consommateur d'un produit qui correspondrait à ce profil idéal.
+
+Il faut que l'appréciation du produit idéal dépasse l'appréciation des
+produits évalués car les produits idéaux maximisent le liking.
 
 ## Première vérification consistence hédonique
 
-Un idéal sous entend que l'on préfère l'idéal au produit présenté. On peut verifier cela en faisant pour chaque individu un modèle de prédiction de liking, l'utiliser pour estimer la note attribuée à ses profils idéaux et regarder si ces notes sont meilleures que celles de la réalité. 
+Un idéal sous entend que l'on préfère l'idéal au produit présenté. On
+peut verifier cela en faisant pour chaque individu un modèle de
+prédiction de liking, l'utiliser pour estimer la note attribuée à ses
+profils idéaux et regarder si ces notes sont meilleures que celles de la
+réalité.
 
-## Deuxième verification consistence sensorielle 
+## Deuxième verification consistence sensorielle
 
-L'avantage dans la méthode du profil idéal c'est qu'à l'inverse du préférence mapping, les profils sensoriels et les données hédonique sont appareillées. On aimerait que la note des descripteurs de l'idéal et de l'observé aillent dans le même sens par rapport à l'hédonique. (si un produit est très apprécié lorsqu'il est sucré, que l'idéal le soit aussi)
-
+L'avantage dans la méthode du profil idéal c'est qu'à l'inverse du
+préférence mapping, les profils sensoriels et les données hédonique sont
+appareillées. On aimerait que la note des descripteurs de l'idéal et de
+l'observé aillent dans le même sens par rapport à l'hédonique. (si un
+produit est très apprécié lorsqu'il est sucré, que l'idéal le soit
+aussi)
 
 ## Troisième verification corrélation
 
-On peut également regarder les coefficients de corrélation. 
-Tout d’abord, on calcule la corrélation entre les profils sensoriels des produits (tableau de moyennes ajustées) et les notes hédoniques attribués par chaque consommateur. Cela mesure si, pour un consommateur donné, les produits qu’il apprécie le plus sont bien ceux qui possèdent les caractéristiques sensorielles qu’il préfère. 
-Par exemple, un juge a goûté 5 produits, chacun ayant un profil sensoriel, on peut identifier quels types de produits il aime ou n’aime pas. On s’attend alors à ce que les coefficients entre les vrais produits et les notes hédoniques soient très élevés : cela indiquerait une relation cohérente entre les perceptions sensorielles et les préférences exprimées.
+On peut également regarder les coefficients de corrélation. Tout
+d’abord, on calcule la corrélation entre les profils sensoriels des
+produits (tableau de moyennes ajustées) et les notes hédoniques
+attribués par chaque consommateur. Cela mesure si, pour un consommateur
+donné, les produits qu’il apprécie le plus sont bien ceux qui possèdent
+les caractéristiques sensorielles qu’il préfère. Par exemple, un juge a
+goûté 5 produits, chacun ayant un profil sensoriel, on peut identifier
+quels types de produits il aime ou n’aime pas. On s’attend alors à ce
+que les coefficients entre les vrais produits et les notes hédoniques
+soient très élevés : cela indiquerait une relation cohérente entre les
+perceptions sensorielles et les préférences exprimées.
 
-
-Ensuite, on calcule une corrélation entre le premier coefficient et les attributs idéaux du consommateur. On cherche alors à savoir si cette logique de préférence est cohérente avec les idéaux déclarés du consommateur. On compare les corrélations observées entre produits et notes (r(y,h)) avec ces profils idéaux (z). Cela permet de mesurer si les tendances observées dans les notations hédoniques sont en accord avec ce que le consommateur dit aimer. 
-Si le coefficient global est élevé, cela veut dire que le consommateur note de manière cohérente : ses préférences hédoniques sont alignées avec ses goûts idéaux.
-
-
+Ensuite, on calcule une corrélation entre le premier coefficient et les
+attributs idéaux du consommateur. On cherche alors à savoir si cette
+logique de préférence est cohérente avec les idéaux déclarés du
+consommateur. On compare les corrélations observées entre produits et
+notes (r(y,h)) avec ces profils idéaux (z). Cela permet de mesurer si
+les tendances observées dans les notations hédoniques sont en accord
+avec ce que le consommateur dit aimer. Si le coefficient global est
+élevé, cela veut dire que le consommateur note de manière cohérente :
+ses préférences hédoniques sont alignées avec ses goûts idéaux.
 
 # Profil idéal exemple des politiques publiques
 
 ## Adaptation de la méthode à ce nouvel exemple
-On essaie d'adopter la méthodologie de profil idéal à un tout autre sujet, les politiques publiques. Il faut transformer les différents éléments et les adapter à ce sujet : 
 
-- Que seront les produits pour des PP?
-les produits seront des propositions de loi. 
-On veut un espace des produits le plus varié possible (logique du plan expérimental) donc on établit des facteurs expérimentaux représentant un espace de produit le plus varié possible. 
-Ces facteurs expérimentaux sont : le facteur économique (modèle économique), le facteur de budget (financement) et le facteur sociétal (valeurs). Chacun de ces facteurs prend 2 modalités. 
+On essaie d'adopter la méthodologie de profil idéal à un tout autre
+sujet, les politiques publiques. Il faut transformer les différents
+éléments et les adapter à ce sujet :
 
-Pour le facteur économique: libéral ou communiste
-Pour le facteur financier: rigoriste (priorité à l'équilibre) ou priorité à l'investissement
-Pour le facteur de valeurs:  socio-économique traditionnel ou plus moderne (fortes contraintes écologiques)
+-   Que seront les produits pour des PP? les produits seront des
+    propositions de loi. On veut un espace des produits le plus varié
+    possible (logique du plan expérimental) donc on établit des facteurs
+    expérimentaux représentant un espace de produit le plus varié
+    possible. Ces facteurs expérimentaux sont : le facteur économique
+    (modèle économique), le facteur de budget (financement) et le
+    facteur sociétal (valeurs). Chacun de ces facteurs prend 2
+    modalités.
 
+Pour le facteur économique: libéral ou communiste Pour le facteur
+financier: rigoriste (priorité à l'équilibre) ou priorité à
+l'investissement Pour le facteur de valeurs: socio-économique
+traditionnel ou plus moderne (fortes contraintes écologiques)
 
-- Que seront les attributs sensoriels pour des PP? 
-les attributs sensoriels sont des mesures sur les propositions de loi. 
-Voici quelques exemples de mesures: à quel point cette mesure appose une forte pression fiscale sur les entreprises (échelle quanti de 1 à 10 par exemple), à quel point cette mesure priorise le soutien social, à quel point cette mesure priorise la compétitivité des entreprises, la réduction de la dette publique, etc....
+-   Que seront les attributs sensoriels pour des PP? les attributs
+    sensoriels sont des mesures sur les propositions de loi. Voici
+    quelques exemples de mesures: à quel point cette mesure appose une
+    forte pression fiscale sur les entreprises (échelle quanti de 1 à 10
+    par exemple), à quel point cette mesure priorise le soutien social,
+    à quel point cette mesure priorise la compétitivité des entreprises,
+    la réduction de la dette publique, etc....
 
-- Que sera le jugement hédonique pour des PP?
-Dans cet exemple, le jugement hédonique d'une proposition de loi est la propotion de la volonté d'un élu à voter en faveur de l'adoption de cette politique publique, par exemple sur une échelle numérique, de 1 à 10 (1 = pas du tout prêt à voter en faveur, 10 = totalement prêt à voter en faveur de cette mesure)
+-   Que sera le jugement hédonique pour des PP? Dans cet exemple, le
+    jugement hédonique d'une proposition de loi est la propotion de la
+    volonté d'un élu à voter en faveur de l'adoption de cette politique
+    publique, par exemple sur une échelle numérique, de 1 à 10 (1 = pas
+    du tout prêt à voter en faveur, 10 = totalement prêt à voter en
+    faveur de cette mesure)
 
-- Quels seront les profils idéaux pour les PP? 
-les profils idéaux sont les apports à faire aux propositions de loi (d'un point de vue de la mesure) pour qu'il maximisent l'appréciation hédonique. On veut voir comment il faut que les propositions de loi soient améliorées pour augmenter la propension à voter en faveur la proposition de loi.
+-   Quels seront les profils idéaux pour les PP? les profils idéaux sont
+    les apports à faire aux propositions de loi (d'un point de vue de la
+    mesure) pour qu'il maximisent l'appréciation hédonique. On veut voir
+    comment il faut que les propositions de loi soient améliorées pour
+    augmenter la propension à voter en faveur la proposition de loi.
 
-## Définition des produits 
+## Définition des produits
 
-Plan expérimental : 
+Plan expérimental :
 
-prop n°   F1 F2 F3 
-1         -1 -1 -1    Libéral – Rigoriste – Traditionnel
-2         -1 -1 +1    Libéral – Rigoriste – Écologique
-3         -1 +1 -1    Libéral – Investissement – Traditionnel
-4         -1 +1 +1    Libéral – Investissement – Écologique
-5         +1 -1 -1    Communiste - Rigoriste – Traditionnel
-6         +1 -1 +1    Communiste - Rigoriste – Écologique
-7         +1 +1 -1    Communiste – Investissement – Traditionnel
-8         +1 +1 +1    Communiste – Investissement – Écologique
+prop n° F1 F2 F3 1 -1 -1 -1 Libéral – Rigoriste – Traditionnel 2 -1 -1
++1 Libéral – Rigoriste – Écologique 3 -1 +1 -1 Libéral – Investissement
+– Traditionnel 4 -1 +1 +1 Libéral – Investissement – Écologique 5 +1 -1
+-1 Communiste - Rigoriste – Traditionnel 6 +1 -1 +1 Communiste -
+Rigoriste – Écologique 7 +1 +1 -1 Communiste – Investissement –
+Traditionnel 8 +1 +1 +1 Communiste – Investissement – Écologique
 
 Exemples de propositions de loi correspondant à ce plan expérimental :
-1- Programme de compétitivité et discipline budgétaire, avec réduction progressive des cotisations sociales patronales, stabilisation du niveau de dépenses publiques et simplification des normes pour l’emploi et l’investissement, pour réduire le déficit public et soutenir l'activité par l'offre
+1- Programme de compétitivité et discipline budgétaire, avec réduction
+progressive des cotisations sociales patronales, stabilisation du niveau
+de dépenses publiques et simplification des normes pour l’emploi et
+l’investissement, pour réduire le déficit public et soutenir l'activité
+par l'offre
 
 2- Programme de transition verte par le marché et budget strict :
-Évolution progressive des normes environnementales, mise en place de crédits d’impôts pour innovations bas-carbone accompagnées d'incitations et de redéploiements budgétaires existants
+Évolution progressive des normes environnementales, mise en place de
+crédits d’impôts pour innovations bas-carbone accompagnées d'incitations
+et de redéploiements budgétaires existants
 
-3- Grand plan d’investissement dans l’innovation et les infrastructures; Dépenses publiques accrues dans les infrastructures numériques et transport, allègement fiscal ciblé sur les entreprises qui embauchent ou exportent, recours partiel à la dette pour financer la croissance future; pour favoriser croissance, emploi, compétitivité.
+3- Grand plan d’investissement dans l’innovation et les infrastructures;
+Dépenses publiques accrues dans les infrastructures numériques et
+transport, allègement fiscal ciblé sur les entreprises qui embauchent ou
+exportent, recours partiel à la dette pour financer la croissance
+future; pour favoriser croissance, emploi, compétitivité.
 
-4- Marché et innovations pour la transition écologique : R&D subventionnée pour l’énergie verte et l’économie circulaire, suppression progressive des subventions aux énergies fossiles, facilité donnée aux entreprises innovantes via des incitations fiscales
+4- Marché et innovations pour la transition écologique : R&D
+subventionnée pour l’énergie verte et l’économie circulaire, suppression
+progressive des subventions aux énergies fossiles, facilité donnée aux
+entreprises innovantes via des incitations fiscales
 
-5- 
+5-
 
-6- État planificateur de la transition écologique : régulation forte des secteurs polluants (quotas, interdictions progressives), redirection du budget existant vers rénovation énergétique et transports doux, aides sociales conditionnées à participation à projets écologiques locaux
+6- État planificateur de la transition écologique : régulation forte des
+secteurs polluants (quotas, interdictions progressives), redirection du
+budget existant vers rénovation énergétique et transports doux, aides
+sociales conditionnées à participation à projets écologiques locaux
 
-7- 
+7-
 
-8- Plan massif pour les services publiques et la transition écologique, hausse des impôts sur les sociétés et écotaxe, et recours à la dette 
+8- Plan massif pour les services publiques et la transition écologique,
+hausse des impôts sur les sociétés et écotaxe, et recours à la dette
