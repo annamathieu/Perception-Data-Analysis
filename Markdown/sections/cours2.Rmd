@@ -204,9 +204,9 @@ les profils idéaux sont les apports à faire aux propositions de loi (d'un poin
 Plan expérimental : 
 
 prop n°   F1 F2 F3 
-1         -1 -1 -1  
-2         -1 -1 +1
-3         -1 +1 -1
+1         -1 -1 -1    Libéral – Rigoriste – Traditionnel
+2         -1 -1 +1    Libéral – Rigoriste – Écologique
+3         -1 +1 -1    
 4         -1 +1 +1
 5         +1 -1 -1
 6         +1 -1 +1
@@ -214,12 +214,18 @@ prop n°   F1 F2 F3
 8         +1 +1 +1
 
 Exemples de propositions de loi correspondant à ce plan expérimental :
-1- 
+1- Programme de compétitivité et discipline budgétaire, avec réduction progressive des cotisations sociales patronales, stabilisation du niveau de dépenses publiques et simplification des normes pour l’emploi et l’investissement, pour réduire le déficit public et soutenir l'activité par l'offre
+
 2- 
+
 3- 
+
 4- 
+
 5- 
+
 6- 
+
 7- 
 
 8- Plan massif pour les services publiques et la transition écologique, hausse des impôts sur les sociétés et écotaxe, et recours à la dette 
