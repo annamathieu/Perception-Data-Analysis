@@ -4,9 +4,11 @@ author: "M2 Stat optional class Analyse de données de Perception"
 date: "`r Sys.Date()`"
 output: html_document
 ---
+
 ## Introduction
-Nous partons d’un **ensemble de stimuli** (par exemple, des assertions, des produits, des échantillons ou des images) qui ont été **conçus selon certains facteurs de variabilité** — c’est ce que l’on appelle la **planification expérimentale**.  
-Chaque dimension de ces stimuli peut correspondre à différents **niveaux de difficulté ou d’intensité** (par exemple : *facile*, *moyen*, *difficile*).  
+
+Nous partons d’un **ensemble de stimuli** (par exemple, des assertions, des produits, des échantillons ou des images) qui ont été **conçus selon certains facteurs de variabilité** — c’est ce que l’on appelle la **planification expérimentale**.\
+Chaque dimension de ces stimuli peut correspondre à différents **niveaux de difficulté ou d’intensité** (par exemple : *facile*, *moyen*, *difficile*).
 
 Pour ce cours, notre étude ne portera pas sur la perception d'un produit, mais sur celle des "Atomic Habits" (un concept popularisé par James Clear dans son livre éponyme) : de petites habitudes visant un impact environnemental significatif. Les méthodes pourront tout de même être appliquées à un produit et sa perception par des consommmateurs.
 
@@ -15,90 +17,85 @@ Nous avons d'abord établi une liste de 14 assertions. Chaque assertion est une 
 Exemple d'assertion : Je consomme uniquement des produits alimentaires de saison, ce qui peut impliquer de renoncer, à la maison comme au restaurant, aux fruits, légumes ou poissons hors saison (par exemple, les agrumes en été ou les tomates en hiver), etc.
 
 ## Definition de la mesure
+
 Une fois les assertions définies, la question centrale était de déterminer la méthode de mesure : Quelle question poser aux consommateurs ? De plus, nous devions décider si les assertions devaient être considérées individuellement ou comme un ensemble.
 
 Nous avons choisi d'analyser les assertions comme un ensemble. Ce choix s'est avéré pertinent car pour obtenir un classement (ranking), les consommateurs devaient évaluer tous les stimuli simultanément.
 
 La question finale posée aux consommateurs est donc la suivante :
 
-“Classer les habitudes suivantes en fonction de celles que vous pensez être capables de tenir sur le long terme pour significativement réduire votre impact sur l’environnement.”
----
+## “Classer les habitudes suivantes en fonction de celles que vous pensez être capables de tenir sur le long terme pour significativement réduire votre impact sur l’environnement.”
 
 ## Classement des stimuli
 
-Les **consommateurs** (ou juges) vont ensuite **classer** ces stimuli en fonction de leurs préférences, en ayant tous les stimuli à disposition.  
+Les **consommateurs** (ou juges) vont ensuite **classer** ces stimuli en fonction de leurs préférences, en ayant tous les stimuli à disposition.\
 On obtient alors une **table de données** dont la structure est la suivante :
 
-- **Lignes** : les individus (ou consommateurs)  
-- **Colonnes** : les stimuli  
-- **Valeurs** : les **notes de classement (ranking)**  
+-   **Lignes** : les individus (ou consommateurs)\
+-   **Colonnes** : les stimuli\
+-   **Valeurs** : les **notes de classement (ranking)**
 
 Ces notes représentent une **mesure de préférence relative** : plus la note est faible, plus l'assertion (le produit) est proche de l’**idéal** du consommateur.
 
-
----
+------------------------------------------------------------------------
 
 ## Représentation dans l’espace des produits
 
-L'avantage avec cette notion de classement c'est que l'on tend vers un idéal. On veut représenter le consommateur dans l'espace produit à travers son idéal. 
+L'avantage avec cette notion de classement c'est que l'on tend vers un idéal. On veut représenter le consommateur dans l'espace produit à travers son idéal.
 
 L’objectif est de représenter simultanément :
 
-- les **consommateurs** (via leurs idéaux) et  
+-   les **consommateurs** (via leurs idéaux) et
 
-- les **stimuli** (les assertions/les produits)  
+-   les **stimuli** (les assertions/les produits)
 
-dans un **même espace perceptif**. 
+dans un **même espace perceptif**.
 
 L'intérêt de projeter dans le même espace est d'avoir la distance perceptuelle entre un idéal consommateur et un ensemble de stimuli.
 
 Une **analyse en correspondances (AC)** peut être utilisée pour projeter ces informations. Chaque **stimulus** y apparaît comme un **point** et les **consommateurs** sont positionnés autour selon la proximité de leurs préférences.
 
-
-> **Rappel :**  
-> L’AC vise à représenter les **relations entre lignes et colonnes** d’un tableau de contingence.  
+> **Rappel :**\
+> L’AC vise à représenter les **relations entre lignes et colonnes** d’un tableau de contingence.\
 > Ici, on cherche à faire **correspondre des idéaux de consommateurs et des assertions (produits)**, c’est-à-dire à mesurer **la distance entre la perception et les stimuli**.
 
-
-Ainsi, on peut visualiser **quelles assertions (ou produit) sont perçues comme proches des idéaux** des consommateurs.  
+Ainsi, on peut visualiser **quelles assertions (ou produit) sont perçues comme proches des idéaux** des consommateurs.\
 Le **plan factoriel** qui en résulte permet d’identifier des **clusters** ou **concepts perceptifs** (groupes de produits ou de préférences similaires).
 
-Si un ideal est proche d'une assertion alors cette assertion est importante pour l'idéal. 
+Si un ideal est proche d'une assertion alors cette assertion est importante pour l'idéal.
 
----
+------------------------------------------------------------------------
 
 ## Problème d’optimisation
 
 L’analyse repose sur un **problème d’optimisation** : on cherche la représentation qui **reproduit au mieux les distances observées** entre les consommateurs et les stimuli.
 
-
 $$
 \sum_i \sum_j (\delta_{ij} - \Delta_{ij})^2
 $$
 
-- L’indice **i** correspond aux **idéaux** des consommateurs.
+-   L’indice **i** correspond aux **idéaux** des consommateurs.
 
-- L’indice **j** correspond aux **stimuli** évalués (assertions/produits).  
+-   L’indice **j** correspond aux **stimuli** évalués (assertions/produits).
 
-- Le $δ_{ij}$ correspond à la distance entre un idéal **i** et un stimuli **j** sur le plan de représentation
+-   Le $δ_{ij}$ correspond à la distance entre un idéal **i** et un stimuli **j** sur le plan de représentation
 
-- Le $\Delta_{ij}$ correspond à la distance entre un individu **i** et un stimuli **j** dans le tableau (par exemple le rang choisi par ce consommateur pour ce stimuli)
+-   Le $\Delta_{ij}$ correspond à la distance entre un individu **i** et un stimuli **j** dans le tableau (par exemple le rang choisi par ce consommateur pour ce stimuli)
 
-L’objectif de l’unfolding est de **trouver la configuration de points** (idéaux et stimulis) qui reproduit le mieux ces distances.  
+L’objectif de l’unfolding est de **trouver la configuration de points** (idéaux et stimulis) qui reproduit le mieux ces distances.\
 Pour y parvenir, on utilise une **descente de gradient**, c’est-à-dire une méthode itérative qui ajuste progressivement les positions des points pour **réduire l’écart entre δ et Δ**.
 
 Le **nombre de dimensions** retenu dépend du problème étudié : on peut dériver par rapport aux **coordonnées des lignes et des colonnes**, selon le nombre d’axes que l’on souhaite représenter.
 
 Chaque **objet** (stimulus ou individu) est donc associé à un **ensemble de coordonnées** dans cet espace multidimensionnel.
 
----
+------------------------------------------------------------------------
 
 ## Qu’est-ce que la MDS (Multidimensional Scaling) ?
 
-La **MDS** (ou **cartographie multidimensionnelle**) est une méthode qui permet de **représenter des objets à partir d’une matrice de distances**.  
+La **MDS** (ou **cartographie multidimensionnelle**) est une méthode qui permet de **représenter des objets à partir d’une matrice de distances**.\
 Elle cherche une configuration spatiale où les distances entre les points reproduisent le plus fidèlement possible les distances observées entre les objets.
 
 L’**unfolding** (ou **préférence unfolding**) est un **cas particulier de MDS**, dans lequel les données sont **incomplètes ou asymétriques** — typiquement lorsque tous les consommateurs n’évaluent pas tous les produits.
 
 Le résultat est une **carte perceptive** qui représente l’ensemble des **distances entre consommateurs et stimuli**, permettant une visualisation claire des **proximités et différences perçues**.
-
