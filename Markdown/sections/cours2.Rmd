@@ -8,7 +8,7 @@ output: html_document
 # Unfolding 
 ## Rappel sur les données d'unfolding 
 
-Le point de départ c'est un jeux de données avec en ligne les individus, en colonne les stimuli et au croisement des lignes et des colonnes le classement / le rang attribué par l'individus au stimuli.  
+Le point de départ c'est un jeu de données avec en ligne les individus, en colonne les stimuli et au croisement des lignes et des colonnes le classement / le rang attribué par l'individus au stimuli.  
 
 Dans ce jeu de données, chaque ligne est une distance à un idéal.
 
@@ -16,7 +16,7 @@ L'objectif de l'unfolding c'est de représenter dans un même espace les idéaux
 
 Le but de l'unfolding va être de minimiser la différence entre nos distance observées (les lignes de notre tableau de données ) et nos distances estimées (les coordonnées des points sur notre graphique). Pour faire cela on va avoir besoin d'une descente de gradient. Cet algorithme dérive les coordonnées x et y jusqu'à converger de façon à ce que le stress soit le plus petit possible.
 
-La question se pose de comment on passe de rang à distance. Il expiste plein de métriques différents, mais on peut très simplement dire que le premier a une distance de 1, que le deuxième a une distance de deux et ainsi de suite. 
+La question se pose de comment on passe de rang à distance. Il expiste plein de métriques différents, mais on peut très simplement dire que le premier a une distance de 1, que le deuxième a une distance de 2 et ainsi de suite. 
 
 ## Notre jeu de données 
 
