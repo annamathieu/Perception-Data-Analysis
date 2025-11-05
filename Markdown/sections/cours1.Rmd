@@ -8,7 +8,7 @@ output: html_document
 Nous partons d’un **ensemble de stimuli** (par exemple, des assertions, des produits, des échantillons ou des images) qui ont été **conçus selon certains facteurs de variabilité** — c’est ce que l’on appelle la **planification expérimentale**.  
 Chaque dimension de ces stimuli peut correspondre à différents **niveaux de difficulté ou d’intensité** (par exemple : *facile*, *moyen*, *difficile*).  
 
-Pour ce cours, notre étude ne portera pas sur la perception d'un produit, mais sur celle des "Atomic Habits" (un concept popularisé par James Clear dans son livre éponyme) : de petites habitudes visant un impact environnemental significatif.
+Pour ce cours, notre étude ne portera pas sur la perception d'un produit, mais sur celle des "Atomic Habits" (un concept popularisé par James Clear dans son livre éponyme) : de petites habitudes visant un impact environnemental significatif. Les méthodes pourront tout de même être appliquées à un produit et sa perception par des consommmateurs.
 
 Nous avons d'abord établi une liste de 14 assertions. Chaque assertion est une phrase qui explicite une habitude spécifique ainsi que les contraintes ou contreparties associées à son adoption.
 
@@ -79,6 +79,10 @@ $$
 - L’indice **i** correspond aux **idéaux** des consommateurs.
 
 - L’indice **j** correspond aux **stimuli** évalués (assertions/produits).  
+
+- Le $δ_{ij}$ correspond à la distance entre un idéal **i** et un stimuli **j** sur le plan de représentation
+
+- Le $\Delta_{ij}$ correspond à la distance entre un individu **i** et un stimuli **j** dans le tableau (par exemple le rang choisi par ce consommateur pour ce stimuli)
 
 L’objectif de l’unfolding est de **trouver la configuration de points** (idéaux et stimulis) qui reproduit le mieux ces distances.  
 Pour y parvenir, on utilise une **descente de gradient**, c’est-à-dire une méthode itérative qui ajuste progressivement les positions des points pour **réduire l’écart entre δ et Δ**.
