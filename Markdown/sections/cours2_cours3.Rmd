@@ -166,7 +166,7 @@ représentés par leurs idéaux. Les idéaux sont de ce point de vue des
 stimulis virtuels. Les atomic habits sont des stimulis réels. On veut
 minimiser la différence entre distance observée (entre un individu et un
 idéal = entre un idéal et un stimuli) et estimées (entre les stimulis
-entre eux). On On veut que la distance entre les individus qui ont des
+entre eux). On veut que la distance entre les individus qui ont des
 idéaux proches soit faible et qu'un individu représenté par son idéal
 soit proche des stimulis proches de son idéal (ceux qui ont été classé
 parmi les premiers stimulis pour cet individu).

@@ -36,6 +36,107 @@ output:
     toc_depth: 2
 ---
 
+```{=html}
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Lora&family=Raleway:wght@400;500;600;800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital,wght@0,100;0,300;0,400;0,500;0,700;0,800;0,900;1,100;1,300;1,400;1,500;1,700;1,800;1,900&family=Manrope:wght@200..800&family=Oswald:wght@200..700&family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet");
+
+/* Définition des couleurs Vert/Forêt/Aqua :
+   - #00704A : Vert Forêt (ancien rouge fraise)
+   - #6A9E88 : Vert Mousse (ancien rose pulpe)
+   - #3C5C50 : Vert Foncé (ancien marron du corps)
+   - #E0F2E9 : Vert très clair (ancien rose clair)
+   - #5E9732 : Vert Feuille (ancien vert survol)
+*/
+
+body {
+  font-family: "Alegreya Sans", monospace;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 1.6;
+  font-weight: 400;
+  color: #3C5C50;
+  margin: 0;
+  padding: 0;
+}
+
+
+h1 {
+  font-family: 'Raleway', sans-serif;
+  font-weight: 800;
+  font-size: 3em;
+  color: #00704A; /* rouge fraise */
+  letter-spacing: 1px;
+  margin-top: 0.5em;
+}
+
+h2 {
+  font-family: 'Raleway', sans-serif;
+  font-weight: 600;
+  font-size: 1.8em;
+  color: #6A9E88; /* rose pulpe */
+  letter-spacing: 0.5px;
+  margin-top: 1.5em;
+}
+
+h3 {
+  font-family: 'Raleway', sans-serif;
+  font-weight: 500;
+  font-size: 1.4em;
+  color: #3C5C50; 
+  margin-top: 1em;
+}
+
+h4, h5 {
+  counter-reset: none;
+}
+
+h4 > .header-section-number,
+h5 > .header-section-number {
+  display: none;
+}
+
+
+.box {
+  background-color: #E0F2E9; 
+  border: 2px dashed #00704A; /* rose bonbon */
+  border-radius: 15px;
+  padding: 20px;
+  margin: 15px 0;
+  box-shadow: 0 0 10px #D0EBE3;
+}
+
+#TOC a {
+  color #00704A; /* rouge fraise */
+  text-decoration: none;
+  font-weight: bold;
+}
+
+#TOC a:hover {
+  text-decoration: underline;
+  color: #5E9732; /* vert feuille fraise */
+}
+
+#TOC .tocify-header {
+  color: #00704A;
+  font-weight: 700;
+  margin-top: 1em;      /* espace AVANT le titre */
+  margin-bottom: 0.2em; /* petit espace APRÈS */
+}
+
+#TOC .tocify-subheader {
+  color: #6A9E88;
+  font-weight: 500;
+  margin-top: 0.1em;
+  margin-bottom: 0.1em;
+  margin-left: 1.2em;
+}
+
+</style>
+
+
+```
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = F, warning = F, fig.height=3, fig.width=4)
@@ -56,7 +157,7 @@ r.files.vec <- r.files.vec[grepl(".Rmd", r.files.vec)]
 ```
 
 # Seance 2 
-```{r child = 'sections/cours2.Rmd'}
-
+```{r }
+#child = 'sections/cours2_cours3.Rmd'
 ```
 
