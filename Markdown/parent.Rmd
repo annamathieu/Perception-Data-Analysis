@@ -157,7 +157,7 @@ r.files.vec <- r.files.vec[grepl(".Rmd", r.files.vec)]
 ```
 
 # Seance 2 
-```{r }
-#child = 'sections/cours2_cours3.Rmd'
+```{r child = 'sections/cours2_cours3.Rmd'}
+
 ```
 
