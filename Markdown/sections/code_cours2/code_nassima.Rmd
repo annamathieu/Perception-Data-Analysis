@@ -1,0 +1,147 @@
+---
+title: "Untitled"
+author: "Nassima EL HILALI"
+date: "2025-11-03"
+output: html_document
+---
+
+```{r}
+data <- read.table("Atomic Habits.csv", sep = ",", dec = ",", header = TRUE)
+
+```
+
+```{r}
+data <- data[, -c(1, 2, 3, 4, 5, 20, 21)]
+
+
+```
+
+
+```{r}
+data[data == ""] <- NA
+data <- na.omit(data)
+
+```
+
+
+```{r}
+ncol(data)
+vec_ligne1 <- as.character(unlist(data[1, ]))
+length(vec_ligne1)  
+
+sorted <- t(apply(data, 1, function(x) {
+  sort(as.character(x))
+}))
+
+?slice()
+```
+
+
+pour chaque ligne, trier par ordre alphabétique, donner les rangs (classement de chaque individu), puis transposer
+
+```{r}
+data <- data.frame(lapply(data, as.character))
+
+
+ranks_init <- matrix(rep(1:ncol(data), nrow(data)),
+                     nrow = nrow(data),
+                     byrow = TRUE)
+
+reorder_alpha <- function(items, ranks){
+  o <- order(items)
+  list(items[o], ranks[o])
+}
+
+res <- lapply(seq_len(nrow(data)), function(i){
+  reorder_alpha(as.character(data[i, ]), ranks_init[i, ])
+})
+
+sorted_items <- t(sapply(res, function(z) z[[1]]))
+sorted_ranks <- t(sapply(res, function(z) z[[2]]))
+
+
+```
+
+
+```{r}
+
+data1 <- read.table("habits_large.csv", sep = ",", dec = ",", header = TRUE)
+
+data2 <- read.table("Atomic Habits.csv", sep = ",", dec = ",", header = TRUE)
+
+library(smacof)
+head(habits_large)
+```
+
+```{r}
+un_habit <- unfolding(habits_large)
+un_habit
+
+```
+
+```{r}
+plot(un_habit, main = "Configuration habits Data")
+```
+
+
+```{r}
+ideal <- un_habit$conf.row
+head(ideal)
+
+stim <- un_habit$conf.col
+head(stim)
+
+```
+
+```{r}
+old_names <- colnames(habits_large)
+old_names
+
+```
+
+```{r}
+new_names <- paste0("Hab", seq_len(ncol(habits_large)))
+new_names
+
+```
+
+```{r}
+colnames(ideal) <- paste0("Dim", 1:ncol(ideal))
+colnames(stim)  <- paste0("Dim", 1:ncol(stim))
+rownames(stim)  <- new_names
+
+```
+
+```{r}
+dic <- data.frame(
+  new = new_names,
+  old = old_names
+)
+dic
+
+```
+
+```{r}
+library(ggplot2)
+
+stim_df <- as.data.frame(stim)
+stim_df$label <- rownames(stim)
+
+ideal_df <- as.data.frame(ideal)
+ideal_df$id <- paste0("Ind", seq_len(nrow(ideal)))
+
+
+```
+
+```{r}
+ggplot() +
+  geom_point(data = stim_df, aes(x = Dim1, y = Dim2), color = "darkred") +
+  geom_text(data = stim_df, aes(x = Dim1, y = Dim2, label = label),
+            color = "darkred", size = 3, vjust = -1) +
+  
+  geom_point(data = ideal_df, aes(x = Dim1, y = Dim2), color = "steelblue") +
+  
+  theme_minimal() +
+  ggtitle("Configuration habits Data")
+
+```
