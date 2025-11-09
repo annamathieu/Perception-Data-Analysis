@@ -29,8 +29,8 @@ Pour faire cela on va avoir besoin d'une descente de gradient. Cet
 algorithme dérive les coordonnées x et y jusqu'à converger de façon à ce
 que le stress soit le plus petit possible.
 
-La question se pose de comment on passe de rang à distance. Il expiste
-plein de métriques différents, mais on peut très simplement dire que le
+La question se pose de comment on passe de rang à distance. Il existe
+pleins de métriques différentes, mais on peut très simplement dire que le
 premier a une distance de 1, que le deuxième a une distance de 2 et
 ainsi de suite.
 
@@ -162,56 +162,30 @@ fig
 ## Description de notre graphique
 
 Ce graphique issu de l'unfolding est construit à partir des individus
-représentés par leurs idéaux. Les idéaux sont de ce point de vue des
-stimulis virtuels. Les atomic habits sont des stimulis réels. On veut
-minimiser la différence entre distance observée (entre un individu et un
+représentés par leurs idéaux. 
+Les idéaux sont de ce point de vue des stimulis virtuels. 
+Les atomic habits sont des stimulis réels.
+On veut minimiser la différence entre distances observées (entre un individu et un
 idéal = entre un idéal et un stimuli) et estimées (entre les stimulis
-entre eux). On veut que la distance entre les individus qui ont des
-idéaux proches soit faible et qu'un individu représenté par son idéal
-soit proche des stimulis proches de son idéal (ceux qui ont été classé
-parmi les premiers stimulis pour cet individu).
+entre eux). On souhaite que les individus ayant des idéaux similaires soient représentés proches les uns des autres, et que chaque individu, représenté par son idéal, se trouve à proximité des stimuli qui lui sont proches, c’est-à-dire ceux qui ont été classés parmi ses premiers choix.
 
 A partir des données obtenues, on peut dire qu'il semble y avoir
-plusieurs clusters d'atomic habits : - végétalien , antidéforestation ,
-zéro déchet , circuits courts , seconde main (en haut en gauche) -
+plusieurs clusters d'atomic habits : - végétalien, antidéforestation,
+zéro déchet, circuits courts, seconde main (haut à gauche) -
 produits saison, chauffage bas (centre) - outil manuels, covoiturage,
-veille appareils, mobilité douce (bas gauche) - sans avion, ia
+veille appareils, mobilité douce (bas à gauche) - sans avion, ia
 
-Le premier cluster semble rassembler des atomic habits correspondant à
-des habitudes que des individus se sentant impliqués et responsables de
-la réduction de leur empreinte environnementale se sentent capable de
-tenir sur le long terme pour réduire le impact sur l'environnement. En
-effet, ces habitudes sont des actions choisies, assumées, de choix de
-modes de vie et de consommation (devenir végétarien, zéro déchet,
-n'acheter que de la seconde main) et qui relèvent de l'identité des
-individus. De plus, les modalités 'très responsables' et 'moyennement
-responsables' se situent de ce même côté du graphique. Ce groupe
-regroupe ainsi des idéaux de personnes engagées, qui se sentent
-responsables de leur actions et sont prêtes à de forts changement de
-leur mode de vie pour réduire leur impact sur l'environnement.
+Le premier cluster semble regrouper des atomic habits correspondant à des habitudes que des individus se sentant impliqués et responsables dans la réduction de leur empreinte environnementale estiment pouvoir maintenir sur le long terme. Ces habitudes reflètent des actions choisies et assumées, liées à des modes de vie et de consommation engagés, telles que devenir végétarien, adopter le zéro déchet ou n’acheter que des produits de seconde main, et font partie de l’identité de ces individus. Par ailleurs, les modalités «très responsables» et «moyennement responsables» se situent également de ce côté du graphique. Ce groupe représente ainsi des idéaux de personnes engagées, conscientes de leur responsabilité, et prêtes à opérer des changements importants dans leur mode de vie pour réduire leur impact environnemental
 
-Le cluster 2 regroupe des atomic habits autour du chauffage (abaisser la
-température à son domicile) et de la consommation de produits de saison.
-Ils représentent des individus ne sentant peu concernés par les
+Le cluster 2 regroupe des atomic habits liées au chauffage (abaisser la
+température à son domicile) et à la consommation de produits de saison.
+Ils reflètent des individus se sentant peu concernés par les
 questions environnementales.
 
-Le cluster 3 regroupe des atomic habits que l'on pourrait qualifier d'un
-engagement limité, correspondant à des gestes simples, des adaptations
-plus faibles ou passives de leur mode de vie : privilégier la mobilité
-douce, mettre en veille les appareils, privilégier l'usage des outils
-non électriques, utiliser des systèmes de prêt, etc. Cette idéal est
-associé à des individus qui se sentent 'peu responsable' de la baisse de
-leur impact environnental, et qui considèrent avec espoir les
-transitions environnementales.
+Le cluster 3 correspond à un engagement limité, regroupant des habitudes simples ou passives, telles que privilégier la mobilité douce, mettre en veille les appareils, utiliser des outils non électriques ou recourir à des systèmes de prêt. Cet idéal est associé à des individus se sentant "peu responsables" de la réduction de leur impact environnemental, tout en restant optimistes quant aux transitions écologiques.
 
-Le cluster 4 regroupant avion et pas d'utilisation d'IA regroupe des
-idéaux partagés par des individus se sentant 'pas du tout responsables'
-de leur action pour baisser leur impact environnementales. Ces individus
-peuvent être qualifiés de détachés, ou résignés, car ils ne sentent pas
-concernés, et le changement est vécu plus comme une contrainte qu'un
+Le cluster 4 regroupe des habitudes telles que limiter les voyages en avion ou ne pas utiliser d’IA. Il reflète des individus se sentant "pas du tout responsables" de leur impact environnemental. Ces individus peuvent être qualifiés de détachés, ou résignés, car ils ne sentent pas concernés, et le changement davantage vécu comme une contrainte qu'un
 choix.
-
-# D'idéal au Profil idéal
 
 Un profil sensoriel c'est un ensemble de caractéristiques évaluées par
 nos sens. Un profil idéal est un profil particulier: un ensemble de
