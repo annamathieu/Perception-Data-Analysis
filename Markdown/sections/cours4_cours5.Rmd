@@ -9,22 +9,58 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+## Tâches de tri
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+Les **tâvhes de tri** consistent à donner à des juges un **ensemble d'objets ou d'assertions** et à leur demander de les **regrouper** en catégories. Les données obtenues sont qualitative. 
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+- On ne donne **pas de prisme au juge** (ni critères, ni liste de groupes prédéfinis)
 
-```{r cars}
-summary(cars)
-```
+- On cherche à **comprendre la grille de lecture de la personne**, c'est-à-dire la façon dont elle perçoit les similitudes et différences entre les stimuli. 
 
-## Including Plots
+- On peut ensuite demander au juge de **caractériser** chaque groupe (nommer le groupe)
 
-You can also embed plots, for example:
+Ce type de tâche s'intéresse directement au processus cognitif mis en jeu pour organiser l'information. 
 
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
+__exemple : 12 stimuli et 55 individus__
+Supposons que l'on dispose de 12 stimuli et de 55 individus. Quelle forme peut prendre le tableau de données ? 
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+- Tableau 55 x 12 : chaque individu est décrit par sa manière de trier ou de catégoriser les 12 stimuli. 
+
+- Tableau 12 x 55 : Chaque colonne représente alors un système de tri proposé par un individu (un « set de stimuli » organisé par cette personne). Ce tableau permet de **calculer des distances entre stimuli**, en fonction de la fréquence avec laquelle ils sont mis ensemble par les différents juges. À l’intersection, on peut rattacher les **labels ou commentaires** associés aux groupes par les juges : ces commentaires fournissent des critères d’interprétation des dimensions qui ressortiront des analyses (par exemple, « sucré », « chimique », « métallique », etc.).
+
+A partir de ces tableaux plusieurs types d'analyses sont envisageables. Sur un tableau 12 × 55, on peut réaliser une **Analyse des Correspondances Multiples (ACM)**. L’objectif est d’explorer la structure des relations entre stimuli et individus, et de représenter l’espace perceptif.
+
+En agrégeant les informations de tri, on peut construire un tableau 12 × 12 de co-occurrences. Chaque case indique le nombre de fois où deux objets ont été mis ensemble par les juges.On peut alors effectuer une Analyse des Correspondances (AC) sur ce tableau. Ce type d’analyse se rattache au principe de l’unfolding, où l’on cherche à représenter la proximité entre objets en fonction des co-choix des individus.
+Cependant, il existe des limites à ce tableau puisqu'on perd l’information des commentaires, il faut alors les ajouter comme éléments supplémentaires. On perd de la variabilité individuelle, car on a agrégé l’ensemble des tris, les différences entre juges ne sont plus visibles.
+
+### Saturation 
+Pour des concepts, trier 12, 25 ou 40 concepts reste relativement gérable pour le juge. En revanche, pour les odeurs, trier 12, 25 ou 40 stimulis olfactifs entraîne **rapidement une saturation** (factigue sensorielle et difficulté à maintenir une comparaison fine entre tous les stimulis). 
+
+C'est ici qu'intervient la planification expérimentale : il devient nécessaire d'utiliser des plans incomplets, car on ne peut pas demander au juge de comparer toutes les odeurs en une seule fois. 
+
+Cependant, l'utilisation de ces plans fait perdre de l'information. Les distances entre stimuli ne sont plus exactement les mêmes que si tous les stimuli avaient été vus ensemble. Cela peut modifier la structure perceptive que l’on observe (on parle de problème de focale, l’espace perceptif dépend du sous-ensemble présenté).
+
+**Les stimuli forment un tout**. La perception d’un stimulus dépend aussi du contexte, c’est-à-dire des autres stimuli présentés avec lui. En fragmentant ce tout, on risque d’altérer la représentation globale.
+
+Il faut donc pallier ce problème de distance. Si l’on décide de **faire plusieurs sessions**, il devient nécessaire de réduire le nombre de comparaisons à effectuer à chaque session, tout en gardant une structure cohérente.
+
+
+#### Etape 1 : passer des individus aux groupes. 
+
+Lors d’une première session, chaque juge doit trier un nombre limité d’odeurs (par exemple 10 odeurs). Ils forment des groupes à partir de ce sous-ensemble. Cette étape permet de passer des réponses individuelles à des groupes structurants (des pôles perceptifs).
+
+#### Etape 2 : associer les nouveaux stimuli aux groupes. 
+
+Dans les sessions suivantes, les nouveaux stimuli sont associés aux groupes existants, qui jouent le rôle de pôles ou points d’ancrage.
+
+Les juges peuvent :
+
+- attribuer un nouveau stimulus à un groupe existant,
+
+- modifier un groupe si besoin,
+
+- ou créer un nouveau groupe si le stimulus ne correspond à aucun pôle existant.
+
+L'intérêt est qu'on réduit le nombre de distances à estimer. On ne compare plus chaque stimulus avec tous les autres, mais on l’associe à un groupe. On **freine l’espace de perception**. L’espace perceptif est structuré autour de quelques pôles stables, les nouveaux stimuli viennent s’ancrer dans cet espace au lieu de redéfinir entièrement la carte perceptive à chaque fois.
+
+## Tri séquentiel aglomératif
