@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Tâches de tri
 
-Les **tâvhes de tri** consistent à donner à des juges un **ensemble d'objets ou d'assertions** et à leur demander de les **regrouper** en catégories. Les données obtenues sont qualitative. 
+Les **tâches de tri** consistent à donner à des juges un **ensemble d'objets ou d'assertions** et à leur demander de les **regrouper** en catégories. Les données obtenues sont qualitative. 
 
 - On ne donne **pas de prisme au juge** (ni critères, ni liste de groupes prédéfinis)
 
@@ -80,17 +80,116 @@ Cette fois ci, notre exemple sera le tri de différentes carte par des enfants. 
 - La taille de la forme (grand petit)
 - Le type de contour de la forme (trait plein / trait pointillé)
 
-![exemple de carte](lien encore inexistant)
 
-On demande aux enfants de créer deux groupes distinct à partir du premier groupe (toutes les cartes). Puis autant de fois qu'ils le veulent, ils peuvent diviser à nouveau ces différents groupes en différents groupes. C'est un processus de tri divisif. Grâce à cela, on peut extraire la première feature, le critère de division le plus fréquent chez les sujets. En observant ensuite les chemins de pensées, on peut s'intéresser aux réflexions atypiques, pour mieux comprendre les processus cognitif chez ces enfants.
+On demande aux enfants de créer deux groupes distinct à partir du premier groupe (toutes les cartes). Puis autant de fois qu'ils le veulent, ils peuvent diviser à nouveau ces différents groupes en différents groupes. On obtient alors une suite de partitions emboitées, une hiérarchie entre ces partitions. C'est un processus de tri divisif. Grâce à cela, on peut extraire la première feature, le critère de division le plus fréquent chez les sujets. En observant ensuite les chemins de pensées, on peut s'intéresser aux réflexions atypiques, pour mieux comprendre les processus cognitif chez ces enfants.
 
 ### Principe d'analyse des chemins de pensées
 
-- Lien AFM sur grpe à une variable / ACM
-- carré des liaisons ==> part de variabilité expliqué par une variable.
+Pour pouvoir représenter les choses, on voudrait avoir un plan factoriel qui sépare les 16 cartes d'abord en fonction du critère de séparation le plus utilisé (1er axe du plan factoriel), puis en fonction du second (2e axe du plan factoriel). 
+Intéressons nous ici à un enfant. En ACM, une des représentations des variables est le carré des liaisons, où chaque variable est représentée en fonction l'importance de sa liaison avec le premier axe et le second axe du plan factoriel. On aimerait donc avoir en variable les différentes étapes du tri pour cet enfant. On pourrait alors observer quel étape est corrélée avec le premier axe, puis quelle seconde division est corrélée au premier et second axe... On aurait alors une représentation du chemin de pensée de cet enfant. Mais puisque l'on a plusieurs enfants différents, une ACM de suffit pas. On accorderait autant d'importance à chaque enfant, et l'on veut traiter ces variables comme appartenant à différents groupes (un par enfant). On peut donc se dire que l'ACM est en réalité une AFM dont chaque groupe est constitué d'une seule variable, puis on induit une hiérarchie grâce à une AFMH en ajoutant un groupe par enfant.   
+
+On a donc nos données sous la forme du tableau suivant :
+- 16 lignes correspondant aux 16 cartes 
+- 430 variables correspondant chacune à une des partitions d'un des enfants (par exemple : Enfant 13, étage 2 de sa hiérarchie)
 
 ### Analyse des différentes tâches de tri
 
-- Montrer qu'il y a une différence dans les taches elle meme en fonction de l'age
+On va commencer par analyser les tâches de tri en elles-mêmes. Pour avoir une idée de l'évolution du chemin de pensée selon différentes information. Le tableau contient donc en ligne tous les enfants, et en colonne des informations sur eux ou sur le déroulement de la tâche de tri.
+
+```{r}
+library(readxl)
+library(FactoMineR)
+donnees <- read_xls("Markdown/dataset/Descriptive.xls")
+summary(donnees)
+donnees_1 <- donnees[,c(4,5,6,7,9,11)]
+
+res.PCA<- PCA(donnees_1, quali.sup=c(6), graph = F)
+plot.PCA(res.PCA, choix = "var")
+```
+
+On voit sur le graphe des variables que les des variables que le plan factoriel est très corrélé aux variables suivantes : Nombre de critère cité, utilisés, nombre de hiérarchie et nombre de classes finales sont très liées à la première dimension. Le temps passé avec l'enfant est lui très lié à la seconde dimension. On suppose que le processus de réflexion de l'enfant est très lié à la complexité du tri final, et au temps passé à sur cette tâche.
+
+```{r}
+plot.PCA(res.PCA, invisible="ind")
+```
+
+On remarque ici très nettement une évolution de la réflexion en fonction de l'âge de l'enfant. Il est donc très intéressant de voir les chemins de pensée associés à cette représentation
 
 ### Analyse des processus cognitif
+
+On récupère donc le tableau de données comportant les partitions 
+
+```{r}
+library(tidyverse)
+### On veut réaliser le graphique avec les chemins de pensées.
+
+Tri <- read.table("Markdown/dataset/trih.txt", header = TRUE, stringsAsFactors = TRUE)
+
+Tri <- Tri %>% mutate(across(everything(), as.factor))
+print(Tri[,1:9])
+
+```
+
+Pour réaliser l'AFMH, on doit définir la hiérarchie au travers des variable. Ici, dès qu'il y a un "H1" dans le nom d'une des variables, 
+
+```{r}
+
+# Exemple de vecteur
+x <- names(Tri[-1])
+
+# Étape 1 : compter le nombre de "H1"
+n <- sum(grepl("H1", x))
+cat("Nombre de 'H1' :", n, "\n")
+
+# Étape 2 : trouver les positions de chaque "H1"
+pos <- which(grepl("H1", x))
+
+# Étape 3 : calculer le nombre d’éléments avant le prochain "H1"
+# Pour chaque "H1", on regarde la distance jusqu’au suivant
+res <- integer(n)
+for (i in seq_len(n)) {
+  if (i < n) {
+    res[i] <- pos[i + 1] - pos[i]
+  } else {
+    res[i] <- length(x) - pos[i] + 1 # jusqu’à la fin du vecteur
+  }
+}
+
+
+res
+res2 <- rep(1, ncol(Tri)-1)
+
+
+```
+
+
+```{r}
+
+res.AFMH <- HMFA(Tri[-1],
+                 H = list(res2, res), 
+                 type = rep("n", times = length(res2)),
+                 graph = FALSE)
+
+
+
+
+head(res_MFT_HMFA$ind$coord)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
