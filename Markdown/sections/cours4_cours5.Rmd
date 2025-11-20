@@ -130,9 +130,12 @@ print(Tri[,1:9])
 
 ```
 
-Pour réaliser l'AFMH, on doit définir la hiérarchie au travers des variable. Ici, dès qu'il y a un "H1" dans le nom d'une des variables, 
+Pour réaliser l'AFMH, on doit définir la hiérarchie au travers des variable. Ici, dès qu'il y a un "H1" dans le nom d'une des variables, cela signifie qu'on passe à un nouvel enfant (avec sa première hiérarchie). On crée donc un vecteur de taille "nombre d'enfant" avec pour chaque valeur, le nombre de partitions réalisées par un enfant.
+
+Puisque le jeu de donnée est trop grand, on va étudier seulement une partie des enfants.
 
 ```{r}
+# Tri <- Tri[,c(1:50)]
 
 # Exemple de vecteur
 x <- names(Tri[-1])
@@ -158,10 +161,9 @@ for (i in seq_len(n)) {
 
 res
 res2 <- rep(1, ncol(Tri)-1)
-
-
 ```
 
+Puisque le jeu de donnée est trop grand, on va étudier seulement une partie des enfants.
 
 ```{r}
 
@@ -169,13 +171,59 @@ res.AFMH <- HMFA(Tri[-1],
                  H = list(res2, res), 
                  type = rep("n", times = length(res2)),
                  graph = FALSE)
-
-
-
-
-head(res_MFT_HMFA$ind$coord)
 ```
 
+```{r}
+coord <- res.AFMH$group$coord
+coord <- coord[[1]]
+```
+
+
+Affichons les résultats de l'AFMH
+
+```{r}
+load("Markdown/dataset/resultat_AFMH.RData")
+plot.HMFA(res.AFMH, choix = "ind", invisible = "quali", label = "none")
+```
+
+```{r}
+coord <- as.data.frame(coord)
+
+coord$Enfant <- as.factor(rep(c(1:170), times = as.integer(res)))
+
+fig1 <- coord %>% group_by(Enfant) %>% 
+  ggplot() +
+  aes(x = Dim.1, y = Dim.2) +
+  geom_point(aes(col = Enfant), alpha = 05.) + geom_line(aes(group = Enfant, col = Enfant)) +
+  theme(legend.position = "none")
+
+fig1
+
+ggplotly(fig1)
+
+
+coord %>% filter(Enfant == "24") %>% 
+  ggplot() +
+  aes(x = Dim.1, y = Dim.2) +
+  geom_point(aes(col = Enfant), alpha = 05.) + geom_line(aes(group = Enfant, col = Enfant)) +
+  theme(legend.position = "none") +
+  xlim(0,1) + ylim(0,1)
+  
+
+coord %>% filter(Enfant == "86") %>% 
+  ggplot() +
+  aes(x = Dim.1, y = Dim.2) +
+  geom_point(aes(col = Enfant), alpha = 05.) + geom_line(aes(group = Enfant, col = Enfant)) +
+  theme(legend.position = "none")+
+  xlim(0,1) + ylim(0,1)
+
+coord %>% filter(Enfant == "108") %>% 
+  ggplot() +
+  aes(x = Dim.1, y = Dim.2) +
+  geom_point(aes(col = Enfant), alpha = 05.) + geom_line(aes(group = Enfant, col = Enfant)) +
+  theme(legend.position = "none")+
+  xlim(0,1) + ylim(0,1)
+```
 
 
 
