@@ -68,6 +68,25 @@ par les variables supplémentaires. Ensuite on calcule par modalité de
 chacune des variables supplémentaires le barycentre.
 
 ```{r}
+library(tidyverse)
+dta<-read.table("~/Desktop/Cours M2/senso SL/Perception-Data-Analysis/Markdown/dataset/Atomic Habits.csv", stringsAsFactors = TRUE, sep=",", header=TRUE)
+
+dta <- drop_na(dta)
+names(dta)[6:19] <- as.character(1:14)
+
+final <- read.table("~/Desktop/Cours M2/senso SL/Perception-Data-Analysis/Markdown/dataset/habits_large.csv", header = TRUE, sep = ",")
+
+library(smacof)
+un_folding <- unfolding(final[,2:15])
+
+sup <- dta[,c(1,20:21)]
+names(sup) <- c("ID.reponse", "Responsabilite", "Sentiment")
+
+```
+
+
+
+```{r}
 supw <- cbind(sup,un_folding$conf.row[2:47,])
 supw[,1]<-as.factor(supw[,1])
 supw[,2]<-as.factor(supw[,2])
