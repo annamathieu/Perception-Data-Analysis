@@ -1,0 +1,8 @@
+---
+title: "TD - autonomie"
+author: "senso perception M2"
+date: "2025-11-20"
+output: html_document
+---
+
+Le Rmd est vide, complétez le avec votre TD
