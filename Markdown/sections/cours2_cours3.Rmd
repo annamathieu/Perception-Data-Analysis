@@ -205,7 +205,7 @@ Le cluster 3 correspond à un engagement limité, regroupant des habitudes simpl
 
 Le cluster 4 regroupe des habitudes telles que limiter les voyages en avion ou ne pas utiliser d’IA. Il reflète des individus se sentant "pas du tout responsables" de leur impact environnemental. Ces individus peuvent être qualifiés de détachés, ou résignés, car ils ne sentent pas concernés, et le changement davantage vécu comme une contrainte qu'un
 choix.
-
+# Profil Idéal
 Un profil sensoriel c'est un ensemble de caractéristiques évaluées par
 nos sens. Un profil idéal est un profil particulier: un ensemble de
 caractéristiques qui maximisent le liking (appréciation hédonique) d'un

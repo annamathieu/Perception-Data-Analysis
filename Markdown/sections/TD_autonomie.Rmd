@@ -4,5 +4,45 @@ author: "senso perception M2"
 date: "2025-11-20"
 output: html_document
 ---
+# Introduction 
+Quelle politique alimentaire pour faire la transition ?
 
-Le Rmd est vide, complétez le avec votre TD
+La question de l’évolution de nos systèmes agricoles et alimentaires est au cœur des débats autour de la transition agroécologique. La politique alimentaire est le domaine de la politique publique concernant la manière dont les aliments sont produits, transformés, distribués, achetés ou fournis. Les politiques alimentaires sont conçues pour influencer le fonctionnement du système alimentaire et agricole tout en garantissant les besoins en matière de santé humaine. Cela inclut souvent la prise de décisions concernant les techniques de production et de transformation, la commercialisation et la disponibilité dans l’intérêt d’atteindre ou de promouvoir des objectifs sociaux. La politique alimentaire peut être promulguée à n’importe quel niveau, du local au global, et par une agence gouvernementale ou une organisation.
+Notre analyse porte sur la nécessité de définir quelle politique alimentaire mettre en œuvre pour réussir la transition vers des systèmes plus durables. L’objectif est donc d’évaluer différents scénarios pour identifier les voies les plus souhaitables pour faire la transition. 
+
+# Protocole
+
+On souhaite construire des propositions de lois relatives aux transitions de la politique alimentaire afin de mettre en place des mesures permettant de tendre vers la gouvernance alimentaire de demain. On souhaite donc tester différentes propositions de lois, découlant de différents scénarios politiques. Pour réaliser la construction de l’espace des produits (stimuli), on veut capter le plus de variabilité afin que les contours de ce plan soient les plus larges possibles. Il faut donc définir les facteurs de variabilité et leurs niveaux (modalités). Les facteurs de variabilité retenus sont la production (mode de production des aliments, avec différents niveaux de productivité/impact sur l’environnement), l’accessibilité (régulation des prix par le marché ou interventionnisme de l'État) et la gouvernance (qui prend les décisions et à quel niveau). 
+
+Chaque facteur de variabilité est découpé en trois niveaux afin que les scénari reflètent au mieux l’ensemble du spectre des solutions politiques, le niveau intermédiaire permettant d’éviter une vision trop simpliste.
+
+Pour ces 3 facteurs de variabilité, 3 niveaux (modalités) ont été retenus : 
+Production : -1 (Productiviste), 0 (Mixte), +1 (Agroécologique) 
+Accessibilité : -1 (Prix "vrai"), 0 (Régulé), +1 (Accès universel) 
+Gouvernance : -1 (Global), 0 (Mixte), +1 (Local)
+
+## Plan d’experience : 
+On souhaite tester l’effet de ces 3 facteurs à 3 modalités. Si l’on réalise le plan complet, c'est-à-dire toutes les combinaisons possibles, il faudrait réaliser 27 stimuli. Cela représente un nombre trop important de stimuli à évaluer pour chaque citoyen. On peut utiliser un carré latin pour réduire le nombre d’expériences à 9 tout en garantissant que tous les niveaux de nos facteurs soient représentés et sans répétition. Ce plan est pertinent pour notre analyse car il permet de proposer un éventail de stimulus présentant toutes les combinaisons de politiques possibles. 
+
+Une fois toutes nos combinaisons de facteurs réalisées, il faut définir des politiques publiques correspondant à la combinaison. Le tableau suivant résume les politiques proposées aux consommateurs : 
+![Texte alternatif](/graphs/6-plan.png "Plan d'experience")
+
+Dans la méthode du profil idéal adapté à un produit cosmétique et alimentaire, on demande au consommateur de décrire le produit sur plusieurs descripteurs. Pour les politiques publiques, il faut également réfléchir aux descripteurs. Il est plus compliqué de trouver des descripteurs englobant l’ensemble des aspects d’une politique publique. 
+
+On propose la liste d’attributs suivants pour évaluer nos scénarios de politiques publiques : 
+- Équité sociale : à quel point cette politique permet de réduire les inégalités sociales.
+- Souveraineté alimentaire : à quel point cette politique permet de garantir la souveraineté alimentaire du territoire.
+- Interventionnisme de l'État : à quel point cette politique favorise l’intervention de l'État dans l’économie du pays. 
+- Impact environnemental : à quel point cette politique participe à la réduction des impacts environnementaux du système alimentaire. 
+- Protectionnisme : à quel point cette politique est protectionniste. 
+- Décroissance : à quel point ce scénario favorise la décroissance.
+- Santé : à quel point cette politique prend en compte les besoins en matière de santé. 
+- Education : à quel point cette politique favorise l’éducation des populations sur les sujets de l'alimentation. 
+
+Pour chacun de ces descripteurs, le consommateur devra indiquer sur une échelle de 0 à 10 à quel point la politique publique répond à ce critère. Puis il devra indiqué à quel point il aimerait que la politque réponde à ce critère (notion d'idéal). 
+
+Pour la mesure du liking, l'appréciation de la politique la question suivante est posée : dans l'ensemble, à quel point soutenez-vous ce scénario ?
+
+L’objectif de la méthode de profil idéal est de chercher à maximiser le liking; représenté ici par le soutien ou l’adhésion à une politique.
+
+
