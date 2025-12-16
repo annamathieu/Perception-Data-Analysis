@@ -1,16 +1,46 @@
 ---
-title: "TD - autonomie"
+title: " TD - autonomie"
 author: "senso perception M2"
-date: "2025-11-20"
-output: html_document
+date: today
+format:
+  html:
+    theme:
+      light: cosmo
+      dark: darkly
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    smooth-scroll: true
+    self-contained: true
+editor: visual
 ---
-# Introduction 
+
+```{r setup, include=FALSE}
+# Configuration globale des chunks
+knitr::opts_chunk$set(
+  echo = TRUE, # Afficher le code
+  warning = FALSE, # Masquer les warnings
+  message = FALSE, # Masquer les messages
+  fig.align = "center", # Centrer les figures
+  fig.width = 10, # Largeur des figures
+  fig.height = 6,           
+  out.width = "80%",        
+  cache = FALSE
+)
+  
+library(mirt)
+library(dplyr)
+library(latticeExtra)
+```
+
+# Introduction & protocole de type profil idéal
+## Introduction 
 Quelle politique alimentaire pour faire la transition ?
 
 La question de l’évolution de nos systèmes agricoles et alimentaires est au cœur des débats autour de la transition agroécologique. La politique alimentaire est le domaine de la politique publique concernant la manière dont les aliments sont produits, transformés, distribués, achetés ou fournis. Les politiques alimentaires sont conçues pour influencer le fonctionnement du système alimentaire et agricole tout en garantissant les besoins en matière de santé humaine. Cela inclut souvent la prise de décisions concernant les techniques de production et de transformation, la commercialisation et la disponibilité dans l’intérêt d’atteindre ou de promouvoir des objectifs sociaux. La politique alimentaire peut être promulguée à n’importe quel niveau, du local au global, et par une agence gouvernementale ou une organisation.
 Notre analyse porte sur la nécessité de définir quelle politique alimentaire mettre en œuvre pour réussir la transition vers des systèmes plus durables. L’objectif est donc d’évaluer différents scénarios pour identifier les voies les plus souhaitables pour faire la transition. 
 
-# Protocole
+## Protocole
 
 On souhaite construire des propositions de lois relatives aux transitions de la politique alimentaire afin de mettre en place des mesures permettant de tendre vers la gouvernance alimentaire de demain. On souhaite donc tester différentes propositions de lois, découlant de différents scénarios politiques. Pour réaliser la construction de l’espace des produits (stimuli), on veut capter le plus de variabilité afin que les contours de ce plan soient les plus larges possibles. Il faut donc définir les facteurs de variabilité et leurs niveaux (modalités). Les facteurs de variabilité retenus sont la production (mode de production des aliments, avec différents niveaux de productivité/impact sur l’environnement), l’accessibilité (régulation des prix par le marché ou interventionnisme de l'État) et la gouvernance (qui prend les décisions et à quel niveau). 
 
@@ -21,7 +51,7 @@ Production : -1 (Productiviste), 0 (Mixte), +1 (Agroécologique)
 Accessibilité : -1 (Prix "vrai"), 0 (Régulé), +1 (Accès universel) 
 Gouvernance : -1 (Global), 0 (Mixte), +1 (Local)
 
-## Plan d’experience : 
+### Plan d’experience : 
 On souhaite tester l’effet de ces 3 facteurs à 3 modalités. Si l’on réalise le plan complet, c'est-à-dire toutes les combinaisons possibles, il faudrait réaliser 27 stimuli. Cela représente un nombre trop important de stimuli à évaluer pour chaque citoyen. On peut utiliser un carré latin pour réduire le nombre d’expériences à 9 tout en garantissant que tous les niveaux de nos facteurs soient représentés et sans répétition. Ce plan est pertinent pour notre analyse car il permet de proposer un éventail de stimulus présentant toutes les combinaisons de politiques possibles. 
 
 Une fois toutes nos combinaisons de facteurs réalisées, il faut définir des politiques publiques correspondant à la combinaison. Le tableau suivant résume les politiques proposées aux consommateurs : 
@@ -45,4 +75,210 @@ Pour la mesure du liking, l'appréciation de la politique la question suivante e
 
 L’objectif de la méthode de profil idéal est de chercher à maximiser le liking; représenté ici par le soutien ou l’adhésion à une politique.
 
+# Traitement de données avec le package mirt
+
+## Chargement des données
+```{r}
+data <- read.csv("../dataset/data_536.csv")
+```
+
+## Re-mapping
+```{r}
+# Sélection des colonnes avec affirmations
+items <- data %>%
+  select(matches("Dans.quelle.mesure.êtes.vous.d.accord"))
+
+# Recodage des réponses 
+mapping <- c(
+  "Pas du tout d'accord" = 1,
+  "Plutôt pas d'accord" = 2,
+  "Ni d’accord ni pas d’accord (neutre)" = 3,
+  "Plutôt d’accord" = 4,
+  "Tout à fait d’accord" = 5
+)
+
+items_num <- as.data.frame(apply(items, 2, function(col) {
+  unname(mapping[col])
+}))
+
+```
+
+## Elaboration d'un modèle
+
+```{r}
+# Modèle IRT unidimensionnel 
+mod1 <- mirt(items_num, 1, itemtype = "graded")
+#Évaluation de la qualité de l'ajustement (Goodness of Fit)
+fit_stats <- M2(mod1, type = "C2", calcNull = TRUE)
+print(fit_stats)
+```
+
+On voit que le modèle 
+
+
+
+```{r}
+# Fonction d'optimisation automatique
+optimize_mirt_model <- function(data_matrix, 
+                                target_RMSEA = 0.08, 
+                                target_CFI = 0.95, 
+                                min_items = 10, # On s'arrête s'il reste trop peu d'items
+                                ld_cutoff = 0.25, # Seuil pour la dépendance locale
+                                min_loading = 0.40) { # Seuil pour les mauvais loadings
+  
+  current_items <- data_matrix
+  iteration <- 0
+  log_history <- list()
+  
+  repeat {
+    iteration <- iteration + 1
+    cat("\n------------------------------------------------\n")
+    cat(paste("ITERATION", iteration, "- Nombre d'items restants :", ncol(current_items), "\n"))
+    
+    # 1. Fit du modèle
+    mod <- mirt(current_items, 1, itemtype = "graded", verbose = FALSE)
+    
+    # 2. Récupération des statistiques (avec gestion d'erreur)
+    try({
+      fit_stats <- M2(mod, type = "C2", calcNull = TRUE)
+      print(fit_stats)
+      
+      rmsea <- fit_stats$RMSEA
+      cfi <- fit_stats$CFI
+      
+      # Condition de SUCCÈS
+      if (!is.na(rmsea) && !is.na(cfi) && rmsea <= target_RMSEA && cfi >= target_CFI) {
+        cat("\n>>> SUCCÈS : Le modèle a atteint les critères de qualité !\n")
+        return(list(final_model = mod, final_items = colnames(current_items), history = log_history))
+      }
+    }, silent = TRUE)
+    
+    # Condition d'ARRÊT (trop peu d'items)
+    if (ncol(current_items) <= min_items) {
+      cat("\n>>> ARRÊT : Nombre minimum d'items atteint sans validation parfaite.\n")
+      return(list(final_model = mod, final_items = colnames(current_items), history = log_history))
+    }
+
+    # 3. DIAGNOSTIC : Quoi supprimer ?
+    
+    # A. Vérifier les Loadings (Saturations)
+    params <- summary(mod, verbose = FALSE)
+    loadings <- params$rotF
+    bad_loading_idx <- which.min(loadings) # On prend le pire
+    worst_loading_val <- loadings[bad_loading_idx]
+    
+    item_to_remove <- NULL
+    reason <- ""
+    
+    # Priorité 1 : Si un item a un loading vraiment nul (< 0.40), il part en premier
+    if (worst_loading_val < min_loading) {
+      item_to_remove <- rownames(loadings)[bad_loading_idx]
+      reason <- paste("Faible Loading (", round(worst_loading_val, 3), ")")
+    } else {
+      # Priorité 2 : Dépendance Locale (Q3)
+      residus <- residuals(mod, type = 'Q3', verbose = FALSE)
+      res_matrix <- as.matrix(residus)
+      res_matrix[upper.tri(res_matrix, diag = TRUE)] <- 0 # On ignore la diagonale et les doublons
+      
+      # Trouver la pire paire
+      max_ld <- max(abs(res_matrix))
+      
+      if (max_ld > ld_cutoff) {
+        worst_pair <- which(abs(res_matrix) == max_ld, arr.ind = TRUE)[1, ]
+        item1 <- rownames(res_matrix)[worst_pair[1]]
+        item2 <- colnames(res_matrix)[worst_pair[2]]
+        
+        # Astuce d'expert : Entre les deux items corrélés, on supprime celui qui a le loading le plus faible
+        load1 <- loadings[item1, ]
+        load2 <- loadings[item2, ]
+        
+        if (load1 < load2) {
+          item_to_remove <- item1
+        } else {
+          item_to_remove <- item2
+        }
+        reason <- paste("Dépendance locale forte (r =", round(max_ld, 2), ") avec", if(item_to_remove == item1) item2 else item1)
+      }
+    }
+    
+    # 4. Exécution de la suppression
+    if (!is.null(item_to_remove)) {
+      cat(paste(">>> SUPPRESSION :", item_to_remove, "\nRAISON :", reason, "\n"))
+      current_items <- current_items %>% select(-all_of(item_to_remove))
+      log_history[[iteration]] <- paste("Removed", item_to_remove, "because", reason)
+    } else {
+      cat("\n>>> FIN : Plus aucun critère d'exclusion flagrant trouvé, mais le fit n'est pas parfait.\n")
+      # On pourrait passer à 2 dimensions ici
+      return(list(final_model = mod, final_items = colnames(current_items), history = log_history))
+    }
+  }
+}
+
+# --- LANCEMENT DE L'AUTOMATISATION ---
+# Assure-toi que 'items_num' est bien ta matrice de départ
+resultat <- optimize_mirt_model(as.data.frame(items_num))
+
+# Le modèle final est stocké dans resultat$final_model
+final_mod <- resultat$final_model
+```
+
+```{r}
+
+# Scores latents (niveau d'engagement envers l’alimentation locale)
+theta <- fscores(final_mod)
+head(theta)
+
+# Courbes caractéristiques des items
+plot(final_mod, type = "trace")
+
+# Information des items
+plot(final_mod, type = "info")
+
+# Information du test
+plot(final_mod, type = "infoSE")
+
+```
+P1, P2, P3, P4, P5 correspondent aux probabilité de choisir chaque modalité de la réponse pour un item donné en fonction du **niveau latent**
+
+Ici on utilise une échelle de Likert à 5 points
+
+| Nom de la variable latente | Item de likert correspondant                        |
+|------|-----------------------------|
+| P1   | Pas du tout d'accord        |
+| P2   | Plutot pas d'accord         |
+| P3   | Ni d'accord ni pas d'accord |
+| P4   | Plutôt d'accord             |
+| P5   | Tout à fait d'accord        |
+
+L'axe des abscisses représente le niveau du trait latent estimé par le modèle IRT
+
+L'axe des ordonnée représente la probabilité que la personne ayant ce niveau de trait latent ($\theta$)choisisse une réponse donné
+
+Chaque courbe (P1, P2, P3, P4, P5 ), représente la probabilité conditionnelle d'une catégorie.
+
+On voit donc qu'à faible niveau $\theta$, P1 est élevé. En effet les personnes peu engagé sur la variable latente "engagement envers l'alimentation locale", vont mettre plutot pas d'accord
+
+A niveau moyen de $\theta$ P2 et P3 peuvent dominer
+
+A haut niveau de $\theta$ P4 et surtout P5 montent. En effet les personnes très engagées cochent "Tout à fait d'accord"
+
+Les point où deux courbes se croisent à un seuil du modèle de type graded response : c'est le niveau à partir duquel une catégorie devient plus probable qu'une autre
+
+```{r}
+# Information des items
+plot(mod1, type = "info")
+```
+
+On voit la fonction d'information du TEST complet, donc la somme des informations de TOUS les items. C'est la courbe globel qui nous montre : pour quel niveau de $\theta$ le questionnaire est le plus précis, où il mesure le bien ou mal, où l'erreur de mesure est élevée. Ici notre pic est autour de $\theta$ = 0 ce qui signifie que le questionnaire mesure bien les individus "moyens"
+
+```{r}
+plot(mod1, type = "infotrace")
+```
+
+La on a le test d'information pour chaque items
+
+```{r}
+# Information du test
+plot(mod1, type = "infoSE")
+```
 
