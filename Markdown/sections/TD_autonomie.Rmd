@@ -13,6 +13,8 @@ format:
     smooth-scroll: true
     self-contained: true
 editor: visual
+  markdown: 
+    wrap: sentence
 ---
 
 ```{r setup, include=FALSE}
@@ -34,42 +36,32 @@ library(latticeExtra)
 ```
 
 # Introduction & protocole de type profil idéal
-## Introduction 
+
+## Introduction
+
 Quelle politique alimentaire pour faire la transition ?
 
-La question de l’évolution de nos systèmes agricoles et alimentaires est au cœur des débats autour de la transition agroécologique. La politique alimentaire est le domaine de la politique publique concernant la manière dont les aliments sont produits, transformés, distribués, achetés ou fournis. Les politiques alimentaires sont conçues pour influencer le fonctionnement du système alimentaire et agricole tout en garantissant les besoins en matière de santé humaine. Cela inclut souvent la prise de décisions concernant les techniques de production et de transformation, la commercialisation et la disponibilité dans l’intérêt d’atteindre ou de promouvoir des objectifs sociaux. La politique alimentaire peut être promulguée à n’importe quel niveau, du local au global, et par une agence gouvernementale ou une organisation.
-Notre analyse porte sur la nécessité de définir quelle politique alimentaire mettre en œuvre pour réussir la transition vers des systèmes plus durables. L’objectif est donc d’évaluer différents scénarios pour identifier les voies les plus souhaitables pour faire la transition. 
+La question de l’évolution de nos systèmes agricoles et alimentaires est au cœur des débats autour de la transition agroécologique. La politique alimentaire est le domaine de la politique publique concernant la manière dont les aliments sont produits, transformés, distribués, achetés ou fournis. Les politiques alimentaires sont conçues pour influencer le fonctionnement du système alimentaire et agricole tout en garantissant les besoins en matière de santé humaine. Cela inclut souvent la prise de décisions concernant les techniques de production et de transformation, la commercialisation et la disponibilité dans l’intérêt d’atteindre ou de promouvoir des objectifs sociaux. La politique alimentaire peut être promulguée à n’importe quel niveau, du local au global, et par une agence gouvernementale ou une organisation. Notre analyse porte sur la nécessité de définir quelle politique alimentaire mettre en œuvre pour réussir la transition vers des systèmes plus durables. L’objectif est donc d’évaluer différents scénarios pour identifier les voies les plus souhaitables pour faire la transition.
 
 ## Protocole
 
-On souhaite construire des propositions de lois relatives aux transitions de la politique alimentaire afin de mettre en place des mesures permettant de tendre vers la gouvernance alimentaire de demain. On souhaite donc tester différentes propositions de lois, découlant de différents scénarios politiques. Pour réaliser la construction de l’espace des produits (stimuli), on veut capter le plus de variabilité afin que les contours de ce plan soient les plus larges possibles. Il faut donc définir les facteurs de variabilité et leurs niveaux (modalités). Les facteurs de variabilité retenus sont la production (mode de production des aliments, avec différents niveaux de productivité/impact sur l’environnement), l’accessibilité (régulation des prix par le marché ou interventionnisme de l'État) et la gouvernance (qui prend les décisions et à quel niveau). 
+On souhaite construire des propositions de lois relatives aux transitions de la politique alimentaire afin de mettre en place des mesures permettant de tendre vers la gouvernance alimentaire de demain. On souhaite donc tester différentes propositions de lois, découlant de différents scénarios politiques. Pour réaliser la construction de l’espace des produits (stimuli), on veut capter le plus de variabilité afin que les contours de ce plan soient les plus larges possibles. Il faut donc définir les facteurs de variabilité et leurs niveaux (modalités). Les facteurs de variabilité retenus sont la production (mode de production des aliments, avec différents niveaux de productivité/impact sur l’environnement), l’accessibilité (régulation des prix par le marché ou interventionnisme de l'État) et la gouvernance (qui prend les décisions et à quel niveau).
 
 Chaque facteur de variabilité est découpé en trois niveaux afin que les scénari reflètent au mieux l’ensemble du spectre des solutions politiques, le niveau intermédiaire permettant d’éviter une vision trop simpliste.
 
-Pour ces 3 facteurs de variabilité, 3 niveaux (modalités) ont été retenus : 
-Production : -1 (Productiviste), 0 (Mixte), +1 (Agroécologique) 
-Accessibilité : -1 (Prix "vrai"), 0 (Régulé), +1 (Accès universel) 
-Gouvernance : -1 (Global), 0 (Mixte), +1 (Local)
+Pour ces 3 facteurs de variabilité, 3 niveaux (modalités) ont été retenus : Production : -1 (Productiviste), 0 (Mixte), +1 (Agroécologique) Accessibilité : -1 (Prix "vrai"), 0 (Régulé), +1 (Accès universel) Gouvernance : -1 (Global), 0 (Mixte), +1 (Local)
 
-### Plan d’experience : 
-On souhaite tester l’effet de ces 3 facteurs à 3 modalités. Si l’on réalise le plan complet, c'est-à-dire toutes les combinaisons possibles, il faudrait réaliser 27 stimuli. Cela représente un nombre trop important de stimuli à évaluer pour chaque citoyen. On peut utiliser un carré latin pour réduire le nombre d’expériences à 9 tout en garantissant que tous les niveaux de nos facteurs soient représentés et sans répétition. Ce plan est pertinent pour notre analyse car il permet de proposer un éventail de stimulus présentant toutes les combinaisons de politiques possibles. 
+### Plan d’experience :
 
-Une fois toutes nos combinaisons de facteurs réalisées, il faut définir des politiques publiques correspondant à la combinaison. Le tableau suivant résume les politiques proposées aux consommateurs : 
-![Texte alternatif](/graphs/6-plan.png "Plan d'experience")
+On souhaite tester l’effet de ces 3 facteurs à 3 modalités. Si l’on réalise le plan complet, c'est-à-dire toutes les combinaisons possibles, il faudrait réaliser 27 stimuli. Cela représente un nombre trop important de stimuli à évaluer pour chaque citoyen. On peut utiliser un carré latin pour réduire le nombre d’expériences à 9 tout en garantissant que tous les niveaux de nos facteurs soient représentés et sans répétition. Ce plan est pertinent pour notre analyse car il permet de proposer un éventail de stimulus présentant toutes les combinaisons de politiques possibles.
 
-Dans la méthode du profil idéal adapté à un produit cosmétique et alimentaire, on demande au consommateur de décrire le produit sur plusieurs descripteurs. Pour les politiques publiques, il faut également réfléchir aux descripteurs. Il est plus compliqué de trouver des descripteurs englobant l’ensemble des aspects d’une politique publique. 
+Une fois toutes nos combinaisons de facteurs réalisées, il faut définir des politiques publiques correspondant à la combinaison. Le tableau suivant résume les politiques proposées aux consommateurs : ![Texte alternatif](/graphs/6-plan.png "Plan d'experience")
 
-On propose la liste d’attributs suivants pour évaluer nos scénarios de politiques publiques : 
-- Équité sociale : à quel point cette politique permet de réduire les inégalités sociales.
-- Souveraineté alimentaire : à quel point cette politique permet de garantir la souveraineté alimentaire du territoire.
-- Interventionnisme de l'État : à quel point cette politique favorise l’intervention de l'État dans l’économie du pays. 
-- Impact environnemental : à quel point cette politique participe à la réduction des impacts environnementaux du système alimentaire. 
-- Protectionnisme : à quel point cette politique est protectionniste. 
-- Décroissance : à quel point ce scénario favorise la décroissance.
-- Santé : à quel point cette politique prend en compte les besoins en matière de santé. 
-- Education : à quel point cette politique favorise l’éducation des populations sur les sujets de l'alimentation. 
+Dans la méthode du profil idéal adapté à un produit cosmétique et alimentaire, on demande au consommateur de décrire le produit sur plusieurs descripteurs. Pour les politiques publiques, il faut également réfléchir aux descripteurs. Il est plus compliqué de trouver des descripteurs englobant l’ensemble des aspects d’une politique publique.
 
-Pour chacun de ces descripteurs, le consommateur devra indiquer sur une échelle de 0 à 10 à quel point la politique publique répond à ce critère. Puis il devra indiqué à quel point il aimerait que la politque réponde à ce critère (notion d'idéal). 
+On propose la liste d’attributs suivants pour évaluer nos scénarios de politiques publiques : - Équité sociale : à quel point cette politique permet de réduire les inégalités sociales. - Souveraineté alimentaire : à quel point cette politique permet de garantir la souveraineté alimentaire du territoire. - Interventionnisme de l'État : à quel point cette politique favorise l’intervention de l'État dans l’économie du pays. - Impact environnemental : à quel point cette politique participe à la réduction des impacts environnementaux du système alimentaire. - Protectionnisme : à quel point cette politique est protectionniste. - Décroissance : à quel point ce scénario favorise la décroissance. - Santé : à quel point cette politique prend en compte les besoins en matière de santé. - Education : à quel point cette politique favorise l’éducation des populations sur les sujets de l'alimentation.
+
+Pour chacun de ces descripteurs, le consommateur devra indiquer sur une échelle de 0 à 10 à quel point la politique publique répond à ce critère. Puis il devra indiqué à quel point il aimerait que la politque réponde à ce critère (notion d'idéal).
 
 Pour la mesure du liking, l'appréciation de la politique la question suivante est posée : dans l'ensemble, à quel point soutenez-vous ce scénario ?
 
@@ -78,11 +70,13 @@ L’objectif de la méthode de profil idéal est de chercher à maximiser le lik
 # Traitement de données avec le package mirt
 
 ## Chargement des données
+
 ```{r}
 data <- read.csv("../dataset/data_536.csv")
 ```
 
 ## Re-mapping
+
 ```{r}
 # Sélection des colonnes avec affirmations
 items <- data %>%
@@ -113,9 +107,7 @@ fit_stats <- M2(mod1, type = "C2")
 print(fit_stats)
 ```
 
-On constate que le modèle initial, qui inclut l'ensemble des 48 affirmations, présente un mauvais ajustement aux données (RMSEA > 0.08 et CFI < 0.95). On rappelle que le RMSEA (Root Mean Square Error of Approximation) mesure la quantité de "bruit" ou d'erreur qui reste inexpliqué par le modèle. Le seuil de 0.08 nous paraissait déjà utilisé dans la littérature mais peut être critiqué .Le CFI (Comparative Fit Index) va comparer le modèle à un "modèle nul" (sans structure, sans variable latente). Le seuil de 0.95 est souvent utilisé dans la littérature. (voir  par exemple https://mqr.teluq.ca/confirmer.html )   
-
-
+On constate que le modèle initial, qui inclut l'ensemble des 48 affirmations, présente un mauvais ajustement aux données (RMSEA \> 0.08 et CFI \< 0.95). On rappelle que le RMSEA (Root Mean Square Error of Approximation) mesure la quantité de "bruit" ou d'erreur qui reste inexpliqué par le modèle. Le seuil de 0.08 nous paraissait déjà utilisé dans la littérature mais peut être critiqué .Le CFI (Comparative Fit Index) va comparer le modèle à un "modèle nul" (sans structure, sans variable latente). Le seuil de 0.95 est souvent utilisé dans la littérature. (voir par exemple https://mqr.teluq.ca/confirmer.html )
 
 Il n'est pas surprenant que le modèle soit mal ajusté, compte tenu de la longueur du questionnaire. Avec autant d'items mesurant le même concept (l'engagement pour une alimentation durable), il y a inévitablement des redondances. Or, ces répétitions créent de la dépendance locale, ce qui contredit les hypothèses de base du modèle IRT.
 
@@ -231,77 +223,111 @@ resultat <- optimize_mirt_model(as.data.frame(items_num))
 final_mod <- resultat$final_model
 ```
 
-Notre modèle n'est pas parfaitement ajusté mais on l'a optimisé au mieux du point de vue du CFI et du RMSEA. On aimerait explorer la piste d'un modèle en deux dimensions maheureusement nous n'avons pas la puissance de calcul nécessaire pour faire tourner une fonction similaire à ce qu'on a fait ci-dessus mais adapté à 2 dimensions. (Nous avons essayé mais le calcul n'était pas fini au bout de deux heures). Cependant notre modèle à un CFI et un RMSEA qui s'approche des valeurs cibles. 
+Notre modèle n'est pas parfaitement ajusté mais on l'a optimisé au mieux du point de vue du CFI et du RMSEA. On aimerait explorer la piste d'un modèle en deux dimensions maheureusement nous n'avons pas la puissance de calcul nécessaire pour faire tourner une fonction similaire à ce qu'on a fait ci-dessus mais adapté à 2 dimensions. (Nous avons essayé mais le calcul n'était pas fini au bout de deux heures). Cependant notre modèle à un CFI et un RMSEA qui s'approche des valeurs cibles.
 
 Pour évaluer la précision de mesure du trait latent de notre modèle final on peut aussi évaluer sa fiabilité marginal
 
 $$ Fiabilité = \frac{Variance{\quad}du{\quad}score}{Variance{\quad}du{\quad}score + variance{\quad}de{\quad}l'erreur }$$
 
 Le score étant le niveau d'adhésion de nos individus à une alimentation durable
+
 ```{r}
 reliability <- fscores(final_mod, returnER = TRUE)
 reliability
 ```
+
 On a une fiabilité marginale supérieur à 0.9 donc notre modèle mesure le trait latent avec une grande précision.
 
+## Exploration des données
+
+Maintenant que nous avons choisi un modèle nous pouvons à présent le faire "parler" sur nos données. On va aborder deux points : - La qualité du questionnaire : Quels sont ses points forts, ses point faibles? - La réalité du terrain : Comment se positionnent les participants sur l'engagement à une alimentation durable.
+
+### Evaluation de la qualité du questionnaire
+
+Tout d'abord nous allons la courbe caractéristiques des catégories. Il nous permet de visualiser la probabilité de choisir une réponse selon le niveau d'engagement de la personne.
 
 ```{r}
-
-# Scores latents (niveau d'engagement envers l’alimentation locale)
-theta <- fscores(final_mod)
-head(theta)
-
-# Courbes caractéristiques des items
 plot(final_mod, type = "trace")
-
-# Information des items
-plot(final_mod, type = "info")
-
-# Information du test
-plot(final_mod, type = "infoSE")
-
 ```
-P1, P2, P3, P4, P5 correspondent aux probabilité de choisir chaque modalité de la réponse pour un item donné en fonction du **niveau latent**
 
-Ici on utilise une échelle de Likert à 5 points
+**L'axe des abscisse** $\theta$ représente le niveau de trait latent, ici "l'engagement envers une alimentation durable". Les valeurs sont centrés autour de 0 allant de -6 (très faible engagement) à 6 (très fort engagement)
 
-| Nom de la variable latente | Item de likert correspondant                        |
-|------|-----------------------------|
-| P1   | Pas du tout d'accord        |
-| P2   | Plutot pas d'accord         |
-| P3   | Ni d'accord ni pas d'accord |
-| P4   | Plutôt d'accord             |
-| P5   | Tout à fait d'accord        |
+*L'axe des ordonnées* P($\theta$) représente la probabilité qu'un individu choisise une catégorie de réponse spécifique (Pas d'accord du tout, très d'accord)
 
-L'axe des abscisses représente le niveau du trait latent estimé par le modèle IRT
+*Les courbes P1 à P5* : Chaque courbe correspond à la probabilité conditinnelle de choisir l'une des 5 modalités de l'échelle de Likert
 
-L'axe des ordonnée représente la probabilité que la personne ayant ce niveau de trait latent ($\theta$)choisisse une réponse donné
+| Courbe | Modalité de réponse correspondant |
+|----------------------------|------------------------------|
+| P1                         | Pas du tout d'accord         |
+| P2                         | Plutot pas d'accord          |
+| P3                         | Ni d'accord ni pas d'accord  |
+| P4                         | Plutôt d'accord              |
+| P5                         | Tout à fait d'accord         |
 
-Chaque courbe (P1, P2, P3, P4, P5 ), représente la probabilité conditionnelle d'une catégorie.
+**Interprétation générale des graphiques**
 
-On voit donc qu'à faible niveau $\theta$, P1 est élevé. En effet les personnes peu engagé sur la variable latente "engagement envers l'alimentation locale", vont mettre plutot pas d'accord
+On voit donc qu'à faible niveau $\theta$, P1 est élevé. En effet les personnes peu engagé sur la variable latente "engagement envers l'alimentation durable", vont mettre plutot pas d'accord
 
 A niveau moyen de $\theta$ P2 et P3 peuvent dominer
 
-A haut niveau de $\theta$ P4 et surtout P5 montent. En effet les personnes très engagées cochent "Tout à fait d'accord"
+A haut niveau de $\theta$ P4 et surtout P5 montent. En effet les personnes très engagées ont tendance à cocher "Tout à fait d'accord".
 
-Les point où deux courbes se croisent à un seuil du modèle de type graded response : c'est le niveau à partir duquel une catégorie devient plus probable qu'une autre
+Les point où deux courbes se croisent à un seuil du modèle. C'est le niveau à partir duquel il est plus probable de passer d'une catégorie à une autre.
 
+**Ce que ça dit sur le questionnaire**
+
+  Les pentes de nos graphiques sont nets et descendent de manière verticale (surtout P1 et P5). Cela signifie que nos questions discriminent bien entre les individus peu engagés et très engagé. L'item est sensible aux variations de l'engagement.
+  L'ordre des catégorie est toujours respecté. On voit toujours de gauche à droite P1, P2, P3, P4, P5. Cela signfie que l'échelle de Likert est bien adapté dans notre questionnaire pour avoir un score très élevé (P5 par exemple) il faut avoir un niveau de trait latent $\theta$ plus élevé que pour avoir P4.
+  On ne voit sur aucun graphique de courbe plate. Cela aurait indiqué que la modalité est inutile. En effet des individus de tout les niveau d'engagement aurait répondu la même réponse. Ce n'est pas le cas ici donc toute les modalités sont utiles. 
+    En conclusion, ce graphique nous montre que le questionnaire est bien fait sur 3 aspects:
+    - Les questions sont assez pertinente pour différencier les individus en fonction de leur engagement
+    - L'échelle de likert est bien adapté 
+    - Le nombre de modalité est bon (pas de modalité inutile)
+    
+Ensuite nous allons tracer un graphique d'information par items. L'idée ici est de trouver les questions les plus utiles pour calculer le score.
 ```{r}
-# Information des items
-plot(mod1, type = "info")
+
+plot(final_mod,type = "infotrace")
+
 ```
+  **L'axe des abscisse** représente le niveau de trait latent $\theta$ 
+  **L'axe des ordonnées** I($\theta$) représente la fonction d'information de FIsher. C'est l'inverse de la variance de l'erreur d'estimation. Plus I($\theta$) est élevé, plus l'erreur de mesure est faibel 
+  
+  
+**Interprétation générale**
+Plus un pic est élevé plus la question est performante (elle tranche net entre les individus très engagés et faiblement engagé). La position du pic nous permet de savoir entre qui il différencie. Si le pic est centré sur 0 la question discrimine les gens "moyens". Si le pic est plutôt à gauche l'item est informatif uniquement sur les gens peu engagé. Enfin si la courbe forme un plateau l'item est peu précis.
 
-On voit la fonction d'information du TEST complet, donc la somme des informations de TOUS les items. C'est la courbe globel qui nous montre : pour quel niveau de $\theta$ le questionnaire est le plus précis, où il mesure le bien ou mal, où l'erreur de mesure est élevée. Ici notre pic est autour de $\theta$ = 0 ce qui signifie que le questionnaire mesure bien les individus "moyens"
+**Ce que ça nous dit sur le questionnaire**
+Toutes nos courbes sont centrés sur 0. On voit des pics pour les questions :
 
-```{r}
-plot(mod1, type = "infotrace")
-```
+  - "Dans.quelle.mesure.êtes.vous.d.accord.avec.l.affirmation.suivante....Je.partage.ou.transmets.des.informations.concernant.des.producteurs.ou.initiatives.locales.."
+  
+  - "Dans.quelle.mesure.êtes.vous.d.accord.avec.l.affirmation.suivante....Je.parle.autour.de.moi.des.producteurs.ou.produits.locaux.que.je.recommande.."
+  
+  -"Dans.quelle.mesure.êtes.vous.d.accord.avec.l.affirmation.suivante....J.ai.réduit.mes.achats.en.grande.surface.pour.favoriser.des.circuits.courts.."
 
-La on a le test d'information pour chaque items
+Donc ces questions nous sont très utiles pour différencier les individus faiblement engagés et trés engagés.
+
+On voit des plateaux à droite pour les questions : 
+
+ - "Dans.quelle.mesure.êtes.vous.d.accord.avec.l.affirmation.suivante....Dans.mon.territoire..je.sais.où.trouver.des.aides.pour.accéder.à.une.alimentation.de.qualité.." 
+ - "Dans.quelle.mesure.êtes.vous.d.accord.avec.l.affirmation.suivante....Je.fais.du.bénévolat.ou.j.apporte.un.soutien.à.une.structure.alimentaire.locale.." 
+ 
+Ces questions sont informatif pour les personnes très engagés mais de manière peu précise
+ 
+ 
+Enfin nous allons étudier la zone de confiance du questionnaire. Pour cela nous allons superposer la quantité d'information (bleu) et la marge d'erreur (rouge)
 
 ```{r}
 # Information du test
-plot(mod1, type = "infoSE")
+plot(final_mod, type = "infoSE")
 ```
+Nous voyons ainsi que le questionnaire est très fiable pour les individus moyennement engagé (theta entre -2 et 2). En revanche, pour les individus extrêmes(à 6 ou -6) on a plus d'erreur il faut donc prendre avec des pincettes les scores calculés.   
 
+### La réalité du terrain
+
+```{r}
+scores <- fscores(final_mod)
+hist(scores, main = "Distribution des niveaux de trait latent ", xlab = "Niveau (Theta)", col="lightblue", breaks=20)
+```
+On voit donc que 
