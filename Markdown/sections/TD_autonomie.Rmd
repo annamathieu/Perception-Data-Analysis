@@ -108,25 +108,34 @@ items_num <- as.data.frame(apply(items, 2, function(col) {
 ```{r}
 # Modèle IRT unidimensionnel 
 mod1 <- mirt(items_num, 1, itemtype = "graded")
-#Évaluation de la qualité de l'ajustement (Goodness of Fit)
-fit_stats <- M2(mod1, type = "C2", calcNull = TRUE)
+#Évaluation de la qualité de l'ajustement 
+fit_stats <- M2(mod1, type = "C2")
 print(fit_stats)
 ```
 
-On voit que le modèle 
+On constate que le modèle initial, qui inclut l'ensemble des 48 affirmations, présente un mauvais ajustement aux données (RMSEA > 0.08 et CFI < 0.95). On rappelle que le RMSEA (Root Mean Square Error of Approximation) mesure la quantité de "bruit" ou d'erreur qui reste inexpliqué par le modèle. Le seuil de 0.08 nous paraissait déjà utilisé dans la littérature mais peut être critiqué .Le CFI (Comparative Fit Index) va comparer le modèle à un "modèle nul" (sans structure, sans variable latente). Le seuil de 0.95 est souvent utilisé dans la littérature. (voir  par exemple https://mqr.teluq.ca/confirmer.html )   
 
 
+
+Il n'est pas surprenant que le modèle soit mal ajusté, compte tenu de la longueur du questionnaire. Avec autant d'items mesurant le même concept (l'engagement pour une alimentation durable), il y a inévitablement des redondances. Or, ces répétitions créent de la dépendance locale, ce qui contredit les hypothèses de base du modèle IRT.
+
+Pour corriger cela et obtenir un modèle valide, nous allons procéder par élimination en suivant deux règles précises :
+
+Supprimer les doublons : On repère les paires d'items qui ont une corrélation résiduelle trop forte (seuil fixé à 0.25), signe qu'ils posent quasiment la même question. On rappelle qu'ici la corrélation résiduelle mesure le "bruit" qui relié deux questions pour des mauvaises raisons (mots similaires, contextes similaires, formulation identique)
+
+Supprimer les items "faibles" : On retire les affirmations qui ont un loading trop bas, car elles ne mesurent pas assez bien la variable latente.
+
+Nous avons ainsi créé une fonction R qui automatise cette sélection. Elle cherche itérativement le meilleur modèle en éliminant les items problématiques un par un, en justifiant chaque suppression (soit pour cause de redondance, soit pour manque de pertinence).
 
 ```{r}
-# Fonction d'optimisation automatique
-optimize_mirt_model <- function(data_matrix, 
+optimize_mirt_model <- function(df, 
                                 target_RMSEA = 0.08, 
                                 target_CFI = 0.95, 
                                 min_items = 10, # On s'arrête s'il reste trop peu d'items
                                 ld_cutoff = 0.25, # Seuil pour la dépendance locale
-                                min_loading = 0.40) { # Seuil pour les mauvais loadings
-  
-  current_items <- data_matrix
+                                min_loading = 0.40) # Seuil pour les mauvais loadings
+{
+  current_items <- df
   iteration <- 0
   log_history <- list()
   
@@ -135,12 +144,12 @@ optimize_mirt_model <- function(data_matrix,
     cat("\n------------------------------------------------\n")
     cat(paste("ITERATION", iteration, "- Nombre d'items restants :", ncol(current_items), "\n"))
     
-    # 1. Fit du modèle
+    # Fit du modèle
     mod <- mirt(current_items, 1, itemtype = "graded", verbose = FALSE)
     
-    # 2. Récupération des statistiques (avec gestion d'erreur)
+    # Récupération des statistiques (CFI ET RMSEA)
     try({
-      fit_stats <- M2(mod, type = "C2", calcNull = TRUE)
+      fit_stats <- M2(mod, type = "C2")
       print(fit_stats)
       
       rmsea <- fit_stats$RMSEA
@@ -159,9 +168,9 @@ optimize_mirt_model <- function(data_matrix,
       return(list(final_model = mod, final_items = colnames(current_items), history = log_history))
     }
 
-    # 3. DIAGNOSTIC : Quoi supprimer ?
+    # DIAGNOSTIC : Quoi supprimer et pourquoi?
     
-    # A. Vérifier les Loadings (Saturations)
+    # Vérifier les Loadings 
     params <- summary(mod, verbose = FALSE)
     loadings <- params$rotF
     bad_loading_idx <- which.min(loadings) # On prend le pire
@@ -170,12 +179,12 @@ optimize_mirt_model <- function(data_matrix,
     item_to_remove <- NULL
     reason <- ""
     
-    # Priorité 1 : Si un item a un loading vraiment nul (< 0.40), il part en premier
+    # Priorité 1 : On supprime d'abord les items avec des loadings vraiment nul (< 0.40),
     if (worst_loading_val < min_loading) {
       item_to_remove <- rownames(loadings)[bad_loading_idx]
       reason <- paste("Faible Loading (", round(worst_loading_val, 3), ")")
     } else {
-      # Priorité 2 : Dépendance Locale (Q3)
+      # Priorité 2 : Dépendance Locale 
       residus <- residuals(mod, type = 'Q3', verbose = FALSE)
       res_matrix <- as.matrix(residus)
       res_matrix[upper.tri(res_matrix, diag = TRUE)] <- 0 # On ignore la diagonale et les doublons
@@ -188,7 +197,7 @@ optimize_mirt_model <- function(data_matrix,
         item1 <- rownames(res_matrix)[worst_pair[1]]
         item2 <- colnames(res_matrix)[worst_pair[2]]
         
-        # Astuce d'expert : Entre les deux items corrélés, on supprime celui qui a le loading le plus faible
+        # Entre les deux items corrélés, on supprime celui qui a le loading le plus faible
         load1 <- loadings[item1, ]
         load2 <- loadings[item2, ]
         
@@ -201,26 +210,40 @@ optimize_mirt_model <- function(data_matrix,
       }
     }
     
-    # 4. Exécution de la suppression
+    # Exécution de la suppression
     if (!is.null(item_to_remove)) {
       cat(paste(">>> SUPPRESSION :", item_to_remove, "\nRAISON :", reason, "\n"))
       current_items <- current_items %>% select(-all_of(item_to_remove))
       log_history[[iteration]] <- paste("Removed", item_to_remove, "because", reason)
     } else {
       cat("\n>>> FIN : Plus aucun critère d'exclusion flagrant trouvé, mais le fit n'est pas parfait.\n")
-      # On pourrait passer à 2 dimensions ici
+      
       return(list(final_model = mod, final_items = colnames(current_items), history = log_history))
     }
   }
 }
 
-# --- LANCEMENT DE L'AUTOMATISATION ---
-# Assure-toi que 'items_num' est bien ta matrice de départ
+
+
 resultat <- optimize_mirt_model(as.data.frame(items_num))
 
 # Le modèle final est stocké dans resultat$final_model
 final_mod <- resultat$final_model
 ```
+
+Notre modèle n'est pas parfaitement ajusté mais on l'a optimisé au mieux du point de vue du CFI et du RMSEA. On aimerait explorer la piste d'un modèle en deux dimensions maheureusement nous n'avons pas la puissance de calcul nécessaire pour faire tourner une fonction similaire à ce qu'on a fait ci-dessus mais adapté à 2 dimensions. (Nous avons essayé mais le calcul n'était pas fini au bout de deux heures). Cependant notre modèle à un CFI et un RMSEA qui s'approche des valeurs cibles. 
+
+Pour évaluer la précision de mesure du trait latent de notre modèle final on peut aussi évaluer sa fiabilité marginal
+
+$$ Fiabilité = \frac{Variance{\quad}du{\quad}score}{Variance{\quad}du{\quad}score + variance{\quad}de{\quad}l'erreur }$$
+
+Le score étant le niveau d'adhésion de nos individus à une alimentation durable
+```{r}
+reliability <- fscores(final_mod, returnER = TRUE)
+reliability
+```
+On a une fiabilité marginale supérieur à 0.9 donc notre modèle mesure le trait latent avec une grande précision.
+
 
 ```{r}
 
