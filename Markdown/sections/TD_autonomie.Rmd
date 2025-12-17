@@ -13,8 +13,6 @@ format:
     smooth-scroll: true
     self-contained: true
 editor: visual
-  markdown: 
-    wrap: sentence
 ---
 
 ```{r setup, include=FALSE}
@@ -100,14 +98,13 @@ items_num <- as.data.frame(apply(items, 2, function(col) {
 ## Elaboration d'un modèle
 
 ```{r}
-# Modèle IRT unidimensionnel 
 mod1 <- mirt(items_num, 1, itemtype = "graded")
 #Évaluation de la qualité de l'ajustement 
 fit_stats <- M2(mod1, type = "C2")
 print(fit_stats)
 ```
 
-On constate que le modèle initial, qui inclut l'ensemble des 48 affirmations, présente un mauvais ajustement aux données (RMSEA \> 0.08 et CFI \< 0.95). On rappelle que le RMSEA (Root Mean Square Error of Approximation) mesure la quantité de "bruit" ou d'erreur qui reste inexpliqué par le modèle. Le seuil de 0.08 nous paraissait déjà utilisé dans la littérature mais peut être critiqué .Le CFI (Comparative Fit Index) va comparer le modèle à un "modèle nul" (sans structure, sans variable latente). Le seuil de 0.95 est souvent utilisé dans la littérature. (voir par exemple https://mqr.teluq.ca/confirmer.html )
+On constate que le modèle initial, qui inclut l'ensemble des 48 affirmations, présente un mauvais ajustement aux données (RMSEA \> 0.08 et CFI \< 0.95). On rappelle que le RMSEA (Root Mean Square Error of Approximation) mesure la quantité de "bruit" ou d'erreur qui reste inexpliqué par le modèle. Le seuil de 0.08 nous étant déjà utilisé dans la littérature nous sommes permis de l'utiliser aussi mais cela peut être critiqué.  Le CFI (Comparative Fit Index) va comparer le modèle à un "modèle nul" (sans structure, sans variable latente). Le seuil de 0.95 est souvent utilisé dans la littérature. (voir par exemple https://mqr.teluq.ca/confirmer.html )
 
 Il n'est pas surprenant que le modèle soit mal ajusté, compte tenu de la longueur du questionnaire. Avec autant d'items mesurant le même concept (l'engagement pour une alimentation durable), il y a inévitablement des redondances. Or, ces répétitions créent de la dépendance locale, ce qui contredit les hypothèses de base du modèle IRT.
 
@@ -330,4 +327,4 @@ Nous voyons ainsi que le questionnaire est très fiable pour les individus moyen
 scores <- fscores(final_mod)
 hist(scores, main = "Distribution des niveaux de trait latent ", xlab = "Niveau (Theta)", col="lightblue", breaks=20)
 ```
-On voit donc que 
+On voit donc que la distributions des répondants suit une loi normale. Ainsi il y a peu d'individus très faiblement engagé ou très engagé et bcp d'individus moyens. Ce qui est plutôt attendu.
