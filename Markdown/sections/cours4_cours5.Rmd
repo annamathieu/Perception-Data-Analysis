@@ -4,10 +4,10 @@ author: "M2 Stat optional class Analyse de données de Perception"
 date: "2025-11-13"
 output: html_document
 ---
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r}
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 ```
+
 
 ## Tâches de tri
 
@@ -99,7 +99,8 @@ On va commencer par analyser les tâches de tri en elles-mêmes. Pour avoir une 
 ```{r}
 library(readxl)
 library(FactoMineR)
-donnees <- read_xls("Markdown/dataset/Descriptive.xls")
+library(here)
+donnees <- read_xls(here("Markdown/dataset","Descriptive.xls"))
 summary(donnees)
 donnees_1 <- donnees[,c(4,5,6,7,9,11)]
 
@@ -123,7 +124,7 @@ On récupère donc le tableau de données comportant les partitions
 library(tidyverse)
 ### On veut réaliser le graphique avec les chemins de pensées.
 
-Tri <- read.table("Markdown/dataset/trih.txt", header = TRUE, stringsAsFactors = TRUE)
+Tri <- read.table(here("Markdown/dataset","trih.txt"), header = TRUE, stringsAsFactors = TRUE)
 
 Tri <- Tri %>% mutate(across(everything(), as.factor))
 print(Tri[,1:9])
@@ -166,14 +167,15 @@ res2 <- rep(1, ncol(Tri)-1)
 Puisque le jeu de donnée est trop grand, on va étudier seulement une partie des enfants.
 
 ```{r}
-
-res.AFMH <- HMFA(Tri[-1],
-                 H = list(res2, res), 
-                 type = rep("n", times = length(res2)),
-                 graph = FALSE)
+# res.AFMH <- HMFA(Tri[-1],
+#                  H = list(res2, res), 
+#                  type = rep("n", times = length(res2)),
+#                  graph = FALSE)
 ```
 
 ```{r}
+load(here("Markdown/dataset","resultat_AFMH.RData"))
+
 coord <- res.AFMH$group$coord
 coord <- coord[[1]]
 ```
@@ -182,11 +184,12 @@ coord <- coord[[1]]
 Affichons les résultats de l'AFMH
 
 ```{r}
-load("Markdown/dataset/resultat_AFMH.RData")
 plot.HMFA(res.AFMH, choix = "ind", invisible = "quali", label = "none")
 ```
 
 ```{r}
+library(plotly)
+
 coord <- as.data.frame(coord)
 
 coord$Enfant <- as.factor(rep(c(1:170), times = as.integer(res)))
