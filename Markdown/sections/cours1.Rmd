@@ -4,7 +4,12 @@ author: "M2 Stat optional class Analyse de données de Perception"
 date: "`r Sys.Date()`"
 output: html_document
 ---
+
 ------------------------------------------------------------------------
+```{r, include = F}
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+
+```
 
 ### Introduction
 
