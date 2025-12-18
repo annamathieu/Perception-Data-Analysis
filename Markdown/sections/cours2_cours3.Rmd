@@ -8,9 +8,13 @@ editor_options:
     wrap: 72
 ---
 
-# Unfolding
+```{r}
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+```
 
-## Rappel sur les données d'unfolding
+## Unfolding
+
+### Rappel sur les données d'unfolding
 
 Le point de départ c'est un jeu de données avec en ligne les individus,
 en colonne les stimuli et au croisement des lignes et des colonnes le
@@ -30,11 +34,11 @@ algorithme dérive les coordonnées x et y jusqu'à converger de façon à ce
 que le stress soit le plus petit possible.
 
 La question se pose de comment on passe de rang à distance. Il existe
-pleins de métriques différentes, mais on peut très simplement dire que le
-premier a une distance de 1, que le deuxième a une distance de 2 et
+pleins de métriques différentes, mais on peut très simplement dire que
+le premier a une distance de 1, que le deuxième a une distance de 2 et
 ainsi de suite.
 
-## Notre jeu de données
+### Notre jeu de données
 
 Le jeux de données que nous avons ne correspond pas à des données
 d'unfolding, la structure n'est pas la bonne.\
@@ -49,11 +53,6 @@ ordre alphabétique et récupérer les rangs correspondants.
 
 Chaque groupe a réalisé cela d'une manière différente :
 
-```{r}
-# proposition : 
-
-
-```
 
 Le package *smacof* permet de réaliser l'unfolding. Il faut utiliser la
 fonction unfolding.
@@ -69,25 +68,29 @@ chacune des variables supplémentaires le barycentre.
 
 ```{r}
 library(tidyverse)
-dta<-read.table("~/Desktop/Cours M2/senso SL/Perception-Data-Analysis/Markdown/dataset/Atomic Habits.csv", stringsAsFactors = TRUE, sep=",", header=TRUE)
+library(here)
 
+dta <- read.csv(
+  here("Markdown/dataset", "Atomic Habits.csv"),
+  stringsAsFactors = TRUE,
+  sep = ",",
+  header = TRUE
+)
 dta <- drop_na(dta)
 names(dta)[6:19] <- as.character(1:14)
 
-final <- read.table("~/Desktop/Cours M2/senso SL/Perception-Data-Analysis/Markdown/dataset/habits_large.csv", header = TRUE, sep = ",")
+final <- read.table(here("Markdown/dataset", "habits_large.csv"), header = TRUE, sep = ",")
 
 library(smacof)
-un_folding <- unfolding(final[,2:15])
+unfolded <- unfolding(final[,2:15])
 
 sup <- dta[,c(1,20:21)]
 names(sup) <- c("ID.reponse", "Responsabilite", "Sentiment")
 
 ```
 
-
-
 ```{r}
-supw <- cbind(sup,un_folding$conf.row[2:47,])
+supw <- cbind(sup,unfolded$conf.row[2:47,])
 supw[,1]<-as.factor(supw[,1])
 supw[,2]<-as.factor(supw[,2])
 supw[,3]<-as.factor(supw[,3])
@@ -109,7 +112,7 @@ points_moyens_sentiment <- aggregate(
 
 ```{r}
 # Ajouter de la data illustrative 
-illus <- atomic[,c(1,20:21)]
+illus <- dta[,c(1,20:21)]
 names(illus)[2:3] <- c("Responsabilite_env", "Sentiment_env")  
 
 illus[,1:3] <- lapply(illus, as.factor)
@@ -118,14 +121,42 @@ levels(illus$Responsabilite_env) <- c("pas_du_tout_responsable", "peu_responsabl
 
 # nrow(illus)
 # nrow(group1)
+```
 
-new_data <- cbind(as.data.frame(unfolded$conf.row[-1,]), illus[,-1])
+```{r}
+assertions_long <- names(final)[-1]
+
+assertions_courtes <- c(
+  "circuits_courts",
+  "mobilite_douce",
+  "zero_dechet",
+  "sans_ia",
+  "sans_avion",
+  "produits_saison",
+  "outils_manuel",
+  "chauffage_bas",
+  "covoiturage_train",
+  "antideforestation",
+  "location_pret",
+  "vegetalien",
+  "seconde_main",
+  "veille_off"
+)
+# nom résumé des assertions 
+
+# on renomme les colonnes du df final 
+colnames(final) <- c("id", assertions_courtes)
+
 ```
 
 Création du graph =\> construit à partir des profils idéaux
 
 ```{r}
-assertions_long <- names(resultat)
+library(plotly)
+
+conf_assertions <- as.data.frame(unfolded$conf.col)
+rownames(conf_assertions) <- assertions_courtes
+conf_ind <- as.data.frame(unfolded$conf.row)
 
 fig <- plot_ly() %>%
   
@@ -169,7 +200,7 @@ fig <- plot_ly() %>%
             name = 'Sentiment') %>%
   
 
-  layout(title = list(text = "Unfolding Configuration", x = 0.5),
+  plotly::layout(title = list(text = "Unfolding Configuration", x = 0.5),
          xaxis = list(title = ""),
          yaxis = list(title = ""),
          plot_bgcolor = 'rgb(242, 242, 242)',
@@ -178,38 +209,65 @@ fig <- plot_ly() %>%
 fig
 ```
 
-## Description de notre graphique
+### Description de notre graphique
 
 Ce graphique issu de l'unfolding est construit à partir des individus
-représentés par leurs idéaux. 
-Les idéaux sont de ce point de vue des stimulis virtuels. 
-Les atomic habits sont des stimulis réels.
-On veut minimiser la différence entre distances observées (entre un individu et un
-idéal = entre un idéal et un stimuli) et estimées (entre les stimulis
-entre eux). On souhaite que les individus ayant des idéaux similaires soient représentés proches les uns des autres, et que chaque individu, représenté par son idéal, se trouve à proximité des stimuli qui lui sont proches, c’est-à-dire ceux qui ont été classés parmi ses premiers choix.
+représentés par leurs idéaux. Les idéaux sont de ce point de vue des
+stimulis virtuels. Les atomic habits sont des stimulis réels. On veut
+minimiser la différence entre distances observées (entre un individu et
+un idéal = entre un idéal et un stimuli) et estimées (entre les stimulis
+entre eux). On souhaite que les individus ayant des idéaux similaires
+soient représentés proches les uns des autres, et que chaque individu,
+représenté par son idéal, se trouve à proximité des stimuli qui lui sont
+proches, c’est-à-dire ceux qui ont été classés parmi ses premiers choix.
 
 A partir des données obtenues, on peut dire qu'il semble y avoir
-plusieurs clusters d'atomic habits : - végétalien, antidéforestation,
-zéro déchet, circuits courts, seconde main (haut à gauche) -
-produits saison, chauffage bas (centre) - outil manuels, covoiturage,
-veille appareils, mobilité douce (bas à gauche) - sans avion, ia
+plusieurs clusters d'atomic habits : 
 
-Le premier cluster semble regrouper des atomic habits correspondant à des habitudes que des individus se sentant impliqués et responsables dans la réduction de leur empreinte environnementale estiment pouvoir maintenir sur le long terme. Ces habitudes reflètent des actions choisies et assumées, liées à des modes de vie et de consommation engagés, telles que devenir végétarien, adopter le zéro déchet ou n’acheter que des produits de seconde main, et font partie de l’identité de ces individus. Par ailleurs, les modalités «très responsables» et «moyennement responsables» se situent également de ce côté du graphique. Ce groupe représente ainsi des idéaux de personnes engagées, conscientes de leur responsabilité, et prêtes à opérer des changements importants dans leur mode de vie pour réduire leur impact environnemental
+- végétalien, antidéforestation,
+zéro déchet, circuits courts, seconde main (haut à gauche) 
+- produits saison, chauffage bas (centre) 
+- outil manuels, covoiturage, veille
+appareils, mobilité douce (bas à gauche) 
+- sans avion, ia
+
+Le premier cluster semble regrouper des atomic habits correspondant à
+des habitudes que des individus se sentant impliqués et responsables
+dans la réduction de leur empreinte environnementale estiment pouvoir
+maintenir sur le long terme. Ces habitudes reflètent des actions
+choisies et assumées, liées à des modes de vie et de consommation
+engagés, telles que devenir végétarien, adopter le zéro déchet ou
+n’acheter que des produits de seconde main, et font partie de l’identité
+de ces individus. Par ailleurs, les modalités «très responsables» et
+«moyennement responsables» se situent également de ce côté du graphique.
+Ce groupe représente ainsi des idéaux de personnes engagées, conscientes
+de leur responsabilité, et prêtes à opérer des changements importants
+dans leur mode de vie pour réduire leur impact environnemental
 
 Le cluster 2 regroupe des atomic habits liées au chauffage (abaisser la
 température à son domicile) et à la consommation de produits de saison.
-Ils reflètent des individus se sentant peu concernés par les
-questions environnementales.
+Ils reflètent des individus se sentant peu concernés par les questions
+environnementales.
 
-Le cluster 3 correspond à un engagement limité, regroupant des habitudes simples ou passives, telles que privilégier la mobilité douce, mettre en veille les appareils, utiliser des outils non électriques ou recourir à des systèmes de prêt. Cet idéal est associé à des individus se sentant "peu responsables" de la réduction de leur impact environnemental, tout en restant optimistes quant aux transitions écologiques.
+Le cluster 3 correspond à un engagement limité, regroupant des habitudes
+simples ou passives, telles que privilégier la mobilité douce, mettre en
+veille les appareils, utiliser des outils non électriques ou recourir à
+des systèmes de prêt. Cet idéal est associé à des individus se sentant
+"peu responsables" de la réduction de leur impact environnemental, tout
+en restant optimistes quant aux transitions écologiques.
 
-Le cluster 4 regroupe des habitudes telles que limiter les voyages en avion ou ne pas utiliser d’IA. Il reflète des individus se sentant "pas du tout responsables" de leur impact environnemental. Ces individus peuvent être qualifiés de détachés, ou résignés, car ils ne sentent pas concernés, et le changement davantage vécu comme une contrainte qu'un
-choix.
-# Profil Idéal
-Un profil sensoriel c'est un ensemble de caractéristiques évaluées par
-nos sens. Un profil idéal est un profil particulier: un ensemble de
-caractéristiques qui maximisent le liking (appréciation hédonique) d'un
-produit (ou autre objet étudié).
+Le cluster 4 regroupe des habitudes telles que limiter les voyages en
+avion ou ne pas utiliser d’IA. Il reflète des individus se sentant "pas
+du tout responsables" de leur impact environnemental. Ces individus
+peuvent être qualifiés de détachés, ou résignés, car ils ne sentent pas
+concernés, et le changement davantage vécu comme une contrainte qu'un
+choix. 
+
+## Profil Idéal 
+
+Un profil sensoriel c'est un ensemble de caractéristiques évaluées par nos sens. Un profil idéal est un profil
+particulier: un ensemble de caractéristiques qui maximisent le liking
+(appréciation hédonique) d'un produit (ou autre objet étudié).
 
 Pour créer un profil idéal, on réunit un panel de consommateurs qui vont
 évaluer des produits sur des descripteurs. En plus de ces descripteurs
@@ -247,14 +305,13 @@ bas.
 Si on a 5 produits, 12 descripteurs, 10 juges, le tableau est de la
 forme suivante :
 
-![Texte
-alternatif](/graphs/df1.png "Tableau de données initial"){width="702"}
+![Textealternatif](images/df1.png "Tableau de données initial")
 
 Si on a 60 juges et qu'on transforme les données individuelles de
 perception sensorielle en profils sensoriels, alors, la forme du tableau
 de données est la suivante :
 
-![Texte alternatif](/graphs/df2.png "Tableau de données")
+![Texte alternatif](images/df2.png "Tableau de données")
 
 On peut construire à partir de ce tableau bleu une ACP sur les profils
 idéaux permettant d'obtenir un espace factoriel de représentation des
@@ -295,7 +352,7 @@ consommateur d'un produit qui correspondrait à ce profil idéal.
 Il faut que l'appréciation du produit idéal dépasse l'appréciation des
 produits évalués car les produits idéaux maximisent le liking.
 
-## Première vérification consistence hédonique
+### Première vérification consistence hédonique
 
 Un idéal sous entend que l'on préfère l'idéal au produit présenté. On
 peut verifier cela en faisant pour chaque individu un modèle de
@@ -303,7 +360,7 @@ prédiction de liking, l'utiliser pour estimer la note attribuée à ses
 profils idéaux et regarder si ces notes sont meilleures que celles de la
 réalité.
 
-## Deuxième verification consistence sensorielle
+### Deuxième verification consistence sensorielle
 
 L'avantage dans la méthode du profil idéal c'est qu'à l'inverse du
 préférence mapping, les profils sensoriels et les données hédonique sont
@@ -312,7 +369,7 @@ l'observé aillent dans le même sens par rapport à l'hédonique. (si un
 produit est très apprécié lorsqu'il est sucré, que l'idéal le soit
 aussi)
 
-## Troisième verification corrélation
+### Troisième verification corrélation
 
 On peut également regarder les coefficients de corrélation. Tout
 d’abord, on calcule la corrélation entre les profils sensoriels des
@@ -336,9 +393,9 @@ avec ce que le consommateur dit aimer. Si le coefficient global est
 élevé, cela veut dire que le consommateur note de manière cohérente :
 ses préférences hédoniques sont alignées avec ses goûts idéaux.
 
-# Profil idéal exemple des politiques publiques
+## Profil idéal exemple des politiques publiques
 
-## Adaptation de la méthode à ce nouvel exemple
+### Adaptation de la méthode à ce nouvel exemple
 
 On essaie d'adopter la méthodologie de profil idéal à un tout autre
 sujet, les politiques publiques. Il faut transformer les différents
@@ -379,7 +436,7 @@ traditionnel ou plus moderne (fortes contraintes écologiques)
     comment il faut que les propositions de loi soient améliorées pour
     augmenter la propension à voter en faveur la proposition de loi.
 
-## Définition des produits
+### Définition des produits
 
 Plan expérimental :
 
@@ -413,14 +470,22 @@ subventionnée pour l’énergie verte et l’économie circulaire, suppression
 progressive des subventions aux énergies fossiles, facilité donnée aux
 entreprises innovantes via des incitations fiscales
 
-5- Programme de rigueur social et souveraineté nationale : maintient strict de l'équilibre budgétaire, recentrage de la dépense publique sur les services essentiels (santé, éducation, sécurité), nationalisation partielle des secteurs stratégiques, encadrement des salaires élevés pour renforcer la justice sociale dans un cadre budgétaire maîtrisé
+5- Programme de rigueur social et souveraineté nationale : maintient
+strict de l'équilibre budgétaire, recentrage de la dépense publique sur
+les services essentiels (santé, éducation, sécurité), nationalisation
+partielle des secteurs stratégiques, encadrement des salaires élevés
+pour renforcer la justice sociale dans un cadre budgétaire maîtrisé
 
 6- État planificateur de la transition écologique : régulation forte des
 secteurs polluants (quotas, interdictions progressives), redirection du
 budget existant vers rénovation énergétique et transports doux, aides
 sociales conditionnées à participation à projets écologiques locaux
 
-7- Grand plan d'investissement public national : relance de l'industrie et de l'emploi par la commande publique, protection des secteurs stratégiques et réindustrialisation du territoire, financement par emprunt national et création d'un fonds souverain, dans une logique d'indépendance économique et de solidarité sociale
+7- Grand plan d'investissement public national : relance de l'industrie
+et de l'emploi par la commande publique, protection des secteurs
+stratégiques et réindustrialisation du territoire, financement par
+emprunt national et création d'un fonds souverain, dans une logique
+d'indépendance économique et de solidarité sociale
 
 8- Plan massif pour les services publiques et la transition écologique,
 hausse des impôts sur les sociétés et écotaxe, et recours à la dette
