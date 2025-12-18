@@ -310,6 +310,8 @@ On voit des plateaux à droite pour les questions :
 
 Ces questions sont informatives pour les personnes très engagées, mais de manière peu précise.
 
+---
+
 Enfin, nous allons étudier la zone de confiance du questionnaire. Pour cela, nous allons superposer la quantité d'information (bleu) et la marge d'erreur (rouge).
 
 ```{r}
