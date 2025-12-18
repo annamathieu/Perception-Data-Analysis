@@ -66,7 +66,7 @@ Pour la mesure du liking, l'appréciation de la politique la question suivante e
 L’objectif de la méthode de profil idéal est de chercher à maximiser le liking; représenté ici par le soutien ou l’adhésion à une politique.
 
 # Traitement de données avec le package mirt
-
+Nous alllons maintenant traiter les réponses à un questionnaire qui porte sur une alimentation durable. Les 536 participants ont répondu à 48 questions en se positionnant sur une échelle de Likert
 ## Chargement des données
 
 ```{r}
