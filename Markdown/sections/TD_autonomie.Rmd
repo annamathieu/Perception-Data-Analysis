@@ -22,15 +22,20 @@ knitr::opts_chunk$set(
   warning = FALSE, # Masquer les warnings
   message = FALSE, # Masquer les messages
   fig.align = "center", # Centrer les figures
-  fig.width = 10, # Largeur des figures
-  fig.height = 6,           
-  out.width = "80%",        
-  cache = FALSE
+  fig.width = 12, # Largeur des figures
+  fig.height = 8,           
+  cache = TRUE
 )
   
 library(mirt)
+mirtCluster() # Active le calcul parallèle
 library(dplyr)
 library(latticeExtra)
+library(ggplot2)
+library(ggridges)
+library(leaflet)
+library(sf)
+
 ```
 
 # Introduction & protocole de type profil idéal
@@ -66,8 +71,8 @@ Pour la mesure du liking, l'appréciation de la politique la question suivante e
 L’objectif de la méthode de profil idéal est de chercher à maximiser le liking; représenté ici par le soutien ou l’adhésion à une politique.
 
 # Traitement de données avec le package mirt
-Nous alllons maintenant traiter les réponses à un questionnaire qui porte sur une alimentation durable. Les 536 participants ont répondu à 48 questions en se positionnant sur une échelle de Likert
-## Chargement des données
+
+Nous allons maintenant traiter les réponses à un questionnaire qui porte sur une alimentation durable. Les 536 participants ont répondu à 48 questions en se positionnant sur une échelle de Likert. \## Chargement des données
 
 ```{r}
 data <- read.csv("../dataset/data_536.csv")
@@ -104,17 +109,17 @@ fit_stats <- M2(mod1, type = "C2")
 print(fit_stats)
 ```
 
-On constate que le modèle initial, qui inclut l'ensemble des 48 affirmations, présente un mauvais ajustement aux données (RMSEA \> 0.08 et CFI \< 0.95). On rappelle que le RMSEA (Root Mean Square Error of Approximation) mesure la quantité de "bruit" ou d'erreur qui reste inexpliqué par le modèle. Le seuil de 0.08 nous étant déjà utilisé dans la littérature nous sommes permis de l'utiliser aussi mais cela peut être critiqué.  Le CFI (Comparative Fit Index) va comparer le modèle à un "modèle nul" (sans structure, sans variable latente). Le seuil de 0.95 est souvent utilisé dans la littérature. (voir par exemple https://mqr.teluq.ca/confirmer.html )
+On constate que le modèle initial, qui inclut l'ensemble des 48 affirmations, présente un mauvais ajustement aux données (RMSEA \> 0.08 et CFI \< 0.95). On rappelle que le RMSEA (Root Mean Square Error of Approximation) mesure la quantité de "bruit" ou d'erreur qui reste inexpliqué par le modèle. Nous avons déjà vu le seuil de 0.08 dans la littérature nous nous sommes donc permis de l'utiliser aussi, mais cela peut être critiqué. Le CFI (Comparative Fit Index) va comparer le modèle à un "modèle nul" (sans structure, sans variable latente). Le seuil de 0.95 est souvent utilisé dans la littérature. (voir par exemple https://mqr.teluq.ca/confirmer.html )
 
 Il n'est pas surprenant que le modèle soit mal ajusté, compte tenu de la longueur du questionnaire. Avec autant d'items mesurant le même concept (l'engagement pour une alimentation durable), il y a inévitablement des redondances. Or, ces répétitions créent de la dépendance locale, ce qui contredit les hypothèses de base du modèle IRT.
 
 Pour corriger cela et obtenir un modèle valide, nous allons procéder par élimination en suivant deux règles précises :
 
-Supprimer les doublons : On repère les paires d'items qui ont une corrélation résiduelle trop forte (seuil fixé à 0.25), signe qu'ils posent quasiment la même question. On rappelle qu'ici la corrélation résiduelle mesure le "bruit" qui relié deux questions pour des mauvaises raisons (mots similaires, contextes similaires, formulation identique)
+Supprimer les doublons : on repère les paires d'items qui ont une corrélation résiduelle trop forte (seuil fixé à 0.25), signe qu'ils posent quasiment la même question. On rappelle qu'ici la corrélation résiduelle mesure le "bruit" qui relie deux questions pour des mauvaises raisons (mots similaires, contextes similaires, formulation identique).
 
-Supprimer les items "faibles" : On retire les affirmations qui ont un loading trop bas, car elles ne mesurent pas assez bien la variable latente.
+Supprimer les items "faibles" : on retire les affirmations qui ont un loading trop bas, car elles ne mesurent pas assez bien la variable latente.
 
-Nous avons ainsi créé une fonction R qui automatise cette sélection. Elle cherche itérativement le meilleur modèle en éliminant les items problématiques un par un, en justifiant chaque suppression (soit pour cause de redondance, soit pour manque de pertinence).
+Nous avons ainsi créé une fonction qui automatise cette sélection. Elle cherche itérativement le meilleur modèle en éliminant les items problématiques un par un, en justifiant chaque suppression (soit pour cause de redondance, soit pour manque de pertinence).
 
 ```{r}
 optimize_mirt_model <- function(df, 
@@ -159,10 +164,10 @@ optimize_mirt_model <- function(df,
 
     # DIAGNOSTIC : Quoi supprimer et pourquoi?
     
-    # Vérifier les Loadings 
+    # Check les Loadings 
     params <- summary(mod, verbose = FALSE)
     loadings <- params$rotF
-    bad_loading_idx <- which.min(loadings) # On prend le pire
+    bad_loading_idx <- which.min(loadings) # On prend le pire (le plus petit)
     worst_loading_val <- loadings[bad_loading_idx]
     
     item_to_remove <- NULL
@@ -178,7 +183,7 @@ optimize_mirt_model <- function(df,
       res_matrix <- as.matrix(residus)
       res_matrix[upper.tri(res_matrix, diag = TRUE)] <- 0 # On ignore la diagonale et les doublons
       
-      # Trouver la pire paire
+      # Trouver la pire paire (avec la plus grosse corrélation résiduelle)
       max_ld <- max(abs(res_matrix))
       
       if (max_ld > ld_cutoff) {
@@ -220,24 +225,24 @@ resultat <- optimize_mirt_model(as.data.frame(items_num))
 final_mod <- resultat$final_model
 ```
 
-Notre modèle n'est pas parfaitement ajusté mais on l'a optimisé au mieux du point de vue du CFI et du RMSEA. On aimerait explorer la piste d'un modèle en deux dimensions maheureusement nous n'avons pas la puissance de calcul nécessaire pour faire tourner une fonction similaire à ce qu'on a fait ci-dessus mais adapté à 2 dimensions. (Nous avons essayé mais le calcul n'était pas fini au bout de deux heures). Cependant notre modèle à un CFI et un RMSEA qui s'approche des valeurs cibles.
+Notre modèle n'est pas parfaitement ajusté, mais on l'a optimisé au mieux du point de vue du CFI et du RMSEA. On aimerait explorer la piste d'un modèle en deux dimensions malheureusement nous n'avons pas la puissance de calcul nécessaire pour faire tourner une fonction similaire à ce qu'on a fait ci-dessus, mais adapté à 2 dimensions. Nous avons essayé, mais le calcul n'était pas fini au bout de deux heures. Cependant notre modèle à un CFI et un RMSEA qui s'approche des valeurs cibles.
 
-Pour évaluer la précision de mesure du trait latent de notre modèle final on peut aussi évaluer sa fiabilité marginal
+Pour évaluer la précision de mesure du trait latent de notre modèle final, on peut aussi évaluer sa fiabilité marginale.
 
 $$ Fiabilité = \frac{Variance{\quad}du{\quad}score}{Variance{\quad}du{\quad}score + variance{\quad}de{\quad}l'erreur }$$
 
-Le score étant le niveau d'adhésion de nos individus à une alimentation durable
+Le score étant le niveau d'adhésion de nos individus à une alimentation durable.
 
 ```{r}
 reliability <- fscores(final_mod, returnER = TRUE)
 reliability
 ```
 
-On a une fiabilité marginale supérieur à 0.9 donc notre modèle mesure le trait latent avec une grande précision.
+On a une fiabilité marginale supérieure à 0.9 donc notre modèle mesure le trait latent (l'engagement à une alimentation durable) avec une grande précision.
 
 ## Exploration des données
 
-Maintenant que nous avons choisi un modèle nous pouvons à présent le faire "parler" sur nos données. On va aborder deux points : - La qualité du questionnaire : Quels sont ses points forts, ses point faibles? - La réalité du terrain : Comment se positionnent les participants sur l'engagement à une alimentation durable.
+Maintenant, que nous avons choisi un modèle, nous pouvons à présent le faire "parler" sur nos données. On va aborder deux points : - La qualité du questionnaire : quels sont ses points forts, ses points faibles? - La réalité du terrain : comment se positionnent les participants sur l'engagement à une alimentation durable ?
 
 ### Evaluation de la qualité du questionnaire
 
@@ -247,79 +252,71 @@ Tout d'abord nous allons la courbe caractéristiques des catégories. Il nous pe
 plot(final_mod, type = "trace")
 ```
 
-**L'axe des abscisse** $\theta$ représente le niveau de trait latent, ici "l'engagement envers une alimentation durable". Les valeurs sont centrés autour de 0 allant de -6 (très faible engagement) à 6 (très fort engagement)
+**L'axe des abscisse** $\theta$ représente le niveau de trait latent, ici "l'engagement envers une alimentation durable". Les valeurs sont centrées autour de 0 allant de -6 (très faible engagement) à 6 (très fort engagement)
 
-*L'axe des ordonnées* P($\theta$) représente la probabilité qu'un individu choisise une catégorie de réponse spécifique (Pas d'accord du tout, très d'accord)
+**L'axe des ordonnées** P($\theta$) représente la probabilité qu'un individu choisise une catégorie de réponse spécifique (Pas d'accord du tout, très d'accord)
 
-*Les courbes P1 à P5* : Chaque courbe correspond à la probabilité conditinnelle de choisir l'une des 5 modalités de l'échelle de Likert
+**Les courbes P1 à P5** : Chaque courbe correspond à la probabilité conditionnelle de choisir l'une des 5 modalités de l'échelle de Likert
 
 | Courbe | Modalité de réponse correspondant |
-|----------------------------|------------------------------|
-| P1                         | Pas du tout d'accord         |
-| P2                         | Plutot pas d'accord          |
-| P3                         | Ni d'accord ni pas d'accord  |
-| P4                         | Plutôt d'accord              |
-| P5                         | Tout à fait d'accord         |
+|--------|-----------------------------------|
+| P1     | Pas du tout d'accord              |
+| P2     | Plutot pas d'accord               |
+| P3     | Ni d'accord ni pas d'accord       |
+| P4     | Plutôt d'accord                   |
+| P5     | Tout à fait d'accord              |
 
 **Interprétation générale des graphiques**
 
-On voit donc qu'à faible niveau $\theta$, P1 est élevé. En effet les personnes peu engagé sur la variable latente "engagement envers l'alimentation durable", vont mettre plutot pas d'accord
+On voit donc qu'à faible niveau $\theta$, P1 est élevé. En effet les personnes peu engagées sur la variable latente "engagement envers l'alimentation durable", vont avoir tendance à cocher plutt pas d'accord aux questions posé
 
 A niveau moyen de $\theta$ P2 et P3 peuvent dominer
 
-A haut niveau de $\theta$ P4 et surtout P5 montent. En effet les personnes très engagées ont tendance à cocher "Tout à fait d'accord".
+A haut niveau de $\theta$ P4 et surtout P5 montent. En effet\^, les personnes très engagées ont tendance à cocher "Tout à fait d'accord".
 
-Les point où deux courbes se croisent à un seuil du modèle. C'est le niveau à partir duquel il est plus probable de passer d'une catégorie à une autre.
-
-**Ce que ça dit sur le questionnaire**
-
-  Les pentes de nos graphiques sont nets et descendent de manière verticale (surtout P1 et P5). Cela signifie que nos questions discriminent bien entre les individus peu engagés et très engagé. L'item est sensible aux variations de l'engagement.
-  L'ordre des catégorie est toujours respecté. On voit toujours de gauche à droite P1, P2, P3, P4, P5. Cela signfie que l'échelle de Likert est bien adapté dans notre questionnaire pour avoir un score très élevé (P5 par exemple) il faut avoir un niveau de trait latent $\theta$ plus élevé que pour avoir P4.
-  On ne voit sur aucun graphique de courbe plate. Cela aurait indiqué que la modalité est inutile. En effet des individus de tout les niveau d'engagement aurait répondu la même réponse. Ce n'est pas le cas ici donc toute les modalités sont utiles. 
-    En conclusion, ce graphique nous montre que le questionnaire est bien fait sur 3 aspects:
-    - Les questions sont assez pertinente pour différencier les individus en fonction de leur engagement
-    - L'échelle de likert est bien adapté 
-    - Le nombre de modalité est bon (pas de modalité inutile)
-    
-Ensuite nous allons tracer un graphique d'information par items. L'idée ici est de trouver les questions les plus utiles pour calculer le score.
-```{r}
-
-plot(final_mod,type = "infotrace")
-
-```
-  **L'axe des abscisse** représente le niveau de trait latent $\theta$ 
-  **L'axe des ordonnées** I($\theta$) représente la fonction d'information de FIsher. C'est l'inverse de la variance de l'erreur d'estimation. Plus I($\theta$) est élevé, plus l'erreur de mesure est faibel 
-  
-  
-**Interprétation générale**
-Plus un pic est élevé plus la question est performante (elle tranche net entre les individus très engagés et faiblement engagé). La position du pic nous permet de savoir entre qui il différencie. Si le pic est centré sur 0 la question discrimine les gens "moyens". Si le pic est plutôt à gauche l'item est informatif uniquement sur les gens peu engagé. Enfin si la courbe forme un plateau l'item est peu précis.
+Les points où deux courbes se croisent à un seuil du modèle. C'est le niveau à partir duquel il est plus probable de passer d'une catégorie à une autre.
 
 **Ce que ça nous dit sur le questionnaire**
-Toutes nos courbes sont centrés sur 0. On voit des pics pour les questions :
 
-  - "Dans.quelle.mesure.êtes.vous.d.accord.avec.l.affirmation.suivante....Je.partage.ou.transmets.des.informations.concernant.des.producteurs.ou.initiatives.locales.."
-  
-  - "Dans.quelle.mesure.êtes.vous.d.accord.avec.l.affirmation.suivante....Je.parle.autour.de.moi.des.producteurs.ou.produits.locaux.que.je.recommande.."
-  
-  -"Dans.quelle.mesure.êtes.vous.d.accord.avec.l.affirmation.suivante....J.ai.réduit.mes.achats.en.grande.surface.pour.favoriser.des.circuits.courts.."
+Les pentes de nos graphiques sont nettes et descendent de manière verticale (surtout P1 et P5). Cela signifie que nos questions discriminent bien entre les individus peu engagés et très engagés. L'item est sensible aux variations de l'engagement. L'ordre des catégories est toujours respecté. On voit toujours de gauche à droite P1, P2, P3, P4, P5. Cela signifie que l'échelle de Likert est bien adapté dans notre questionnaire pour avoir un score très élevé (P5 par exemple) il faut avoir un niveau de trait latent $\theta$ plus élevé que pour avoir P4. On ne voit sur aucun graphique de courbe plate. Cela aurait indiqué que la modalité est inutile. En effet, des individus de tous les niveaux d'engagement auraient répondu la même réponse. Ce n'est pas le cas ici donc toutes les modalités sont utiles. En conclusion, ce graphique nous montre que le questionnaire est bien fait sur 3 aspects : - Les questions sont assez pertinentes pour différencier les individus en fonction de leur engagement. - L'échelle de Likert est bien adapté. - Le nombre de modalités est bon (pas de modalité inutile).
 
-Donc ces questions nous sont très utiles pour différencier les individus faiblement engagés et trés engagés.
+------------------------------------------------------------------------
 
-On voit des plateaux à droite pour les questions : 
-
- - "Dans.quelle.mesure.êtes.vous.d.accord.avec.l.affirmation.suivante....Dans.mon.territoire..je.sais.où.trouver.des.aides.pour.accéder.à.une.alimentation.de.qualité.." 
- - "Dans.quelle.mesure.êtes.vous.d.accord.avec.l.affirmation.suivante....Je.fais.du.bénévolat.ou.j.apporte.un.soutien.à.une.structure.alimentaire.locale.." 
- 
-Ces questions sont informatif pour les personnes très engagés mais de manière peu précise
- 
- 
-Enfin nous allons étudier la zone de confiance du questionnaire. Pour cela nous allons superposer la quantité d'information (bleu) et la marge d'erreur (rouge)
+Ensuite, nous allons tracer un graphique d'information par items. L'idée ici est de trouver les questions qui se sont avéré les plus utiles pour calculer le score.
 
 ```{r}
-# Information du test
+plot(final_mod,type = "infotrace")
+```
+
+**L'axe des abscisse** représente le niveau de trait latent $\theta$ **L'axe des ordonnées** I($\theta$) représente la fonction d'information de Fisher. C'est l'inverse de la variance de l'erreur d'estimation. Plus I($\theta$) est élevé, plus l'erreur de mesure est faible.
+
+**Interprétation générale** Plus un pic est élevé plus la question est performante (elle tranche net entre les individus très engagés et faiblement engagés). La position du pic nous permet de savoir entre qui il différencie. Si le pic est centré sur 0, la question discrimine les gens "moyens". Si le pic est plutôt à gauche l'item, est informatif uniquement sur les gens peu engagées. Enfin si la courbe forme un plateau l'item est peu précis.
+
+**Ce que ça nous dit sur le questionnaire** Toutes nos courbes sont centrées sur 0. On voit des pics pour les questions :
+
+-   "Je.partage.ou.transmets.des.informations.concernant.des.producteurs.ou.initiatives.locales.."
+
+-   "Je.parle.autour.de.moi.des.producteurs.ou.produits.locaux.que.je.recommande.."
+
+\-"J.ai.réduit.mes.achats.en.grande.surface.pour.favoriser.des.circuits.courts.."
+
+Donc ces questions nous sont très utiles pour différencier les individus faiblement engagés et très engagés.
+
+On voit des plateaux à droite pour les questions :
+
+-   "Dans.mon.territoire..je.sais.où.trouver.des.aides.pour.accéder.à.une.alimentation.de.qualité.."
+
+-   "Je.fais.du.bénévolat.ou.j.apporte.un.soutien.à.une.structure.alimentaire.locale.."
+
+Ces questions sont informatives pour les personnes très engagées, mais de manière peu précise.
+
+Enfin, nous allons étudier la zone de confiance du questionnaire. Pour cela, nous allons superposer la quantité d'information (bleu) et la marge d'erreur (rouge).
+
+```{r}
 plot(final_mod, type = "infoSE")
 ```
-Nous voyons ainsi que le questionnaire est très fiable pour les individus moyennement engagé (theta entre -2 et 2). En revanche, pour les individus extrêmes(à 6 ou -6) on a plus d'erreur il faut donc prendre avec des pincettes les scores calculés.   
+
+Nous voyons ainsi, que le questionnaire est très fiable pour les individus moyennement engagés (theta entre -2 et 2). En revanche, pour les individus extrêmes(à 6 ou -6) on a plus d'erreurs, il faut donc prendre avec des pincettes les scores calculés pour les individus avec un score latent extrêmes.
 
 ### La réalité du terrain
 
@@ -327,4 +324,100 @@ Nous voyons ainsi que le questionnaire est très fiable pour les individus moyen
 scores <- fscores(final_mod)
 hist(scores, main = "Distribution des niveaux de trait latent ", xlab = "Niveau (Theta)", col="lightblue", breaks=20)
 ```
-On voit donc que la distributions des répondants suit une loi normale. Ainsi il y a peu d'individus très faiblement engagé ou très engagé et bcp d'individus moyens. Ce qui est plutôt attendu.
+
+On voit donc que la distribution des répondants suit une loi normale. Ainsi, il y a peu d'individus très faiblement engagé ou très engagé et beaucoup d'individus moyens. Ce qui est plutôt attendu.
+
+------------------------------------------------------------------------
+
+Nous allons maintenant voir une carte qui nous montre le score latent moyen de chaque région ainsi que son nombre de participation.
+
+```{r}
+df_scores_region <- data.frame(
+  Region = data$Dans.quelle.région.habitez.vous..,
+  Score = scores[,1]
+) 
+
+# Dataframe pour la carte
+df_map_data <- df_scores_region %>%
+  group_by(Region) %>%
+  summarise(
+    Score_Moyen = mean(Score, na.rm = TRUE),
+    Nb_Repondants = n() # Utile pour voir si une moyenne est fiable
+  )
+
+# Donnée pour le fond de carte
+url_geojson <- "https://raw.githubusercontent.com/gregoiredavid/france-geojson/master/regions.geojson"
+france_regions <- st_read(url_geojson, quiet = TRUE)
+
+df_map_data <- df_map_data %>%
+  mutate(Region_Join = Region)
+
+map_final <- france_regions %>%
+  left_join(df_map_data, by = c("nom" = "Region_Join"))
+
+
+# Palette
+bins <- c(-1, -0.5, -0.2, 0, 0.2, 0.5, 1) 
+pal <- colorBin("RdBu", domain = map_final$Score_Moyen, bins = bins, reverse = FALSE)
+
+#Le graphique Leaflet
+leaflet(data = map_final) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>% # Fond de carte épuré
+  addPolygons(
+    fillColor = ~pal(Score_Moyen),
+    weight = 2,
+    opacity = 1,
+    color = "white",
+    dashArray = "3",
+    fillOpacity = 0.7,
+    highlight = highlightOptions(
+      weight = 5,
+      color = "#666",
+      dashArray = "",
+      fillOpacity = 0.7,
+      bringToFront = TRUE),
+    label = ~paste0(nom, " : ", round(Score_Moyen, 2), " (N=", Nb_Repondants, ")"),
+    labelOptions = labelOptions(
+      style = list("font-weight" = "normal", padding = "3px 8px"),
+      textsize = "15px",
+      direction = "auto")) %>%
+  addLegend(pal = pal, values = ~Score_Moyen, opacity = 0.7, title = "Score d'Engagement Moyen",
+            position = "bottomright")
+```
+
+On voit que la Nouvelle-Aquitaine a le score moyen le plus élevé avec 0.52. Cependant, c'est un résultat critiquable car seulement 30 répondant viennent de Nouvelle-Aquitaine. La région avec le plus de répondant est la Bretagne avec 181 individus, ce qui représente environ un tiers des participants du questionnaire. Elle a un score moyen de -0.03.
+
+------------------------------------------------------------------------
+
+Maintenant, nous allons voir la distribution du score latent pour chaque région.
+
+```{r}
+
+# On enlève les NA et on trie les régions par niveau d'engagement médian
+
+plot_data <- df_scores_region %>%
+  filter(!is.na(Region)) %>%
+  add_count(Region, name = "count") %>%
+  mutate(Region_Label = paste0(Region, " (n=", count, ")")) %>%
+  mutate(Region = forcats::fct_reorder(Region, Score, .fun = median))
+
+# GRAPHIQUE
+ggplot(plot_data, aes(x = Score, y = Region_Label, fill = stat(x))) +
+  geom_density_ridges(
+    fill = "lightblue", 
+    color = "grey30",   
+    scale = 1.5,        # Pas de bosse trop haute
+    rel_min_height = 0.01, # Coupe les queue trop plate
+    alpha = 0.8         # Transparence (pour voir les chevauchements)
+  )+
+  theme_minimal() +
+  labs(title = "Distribution des scores latents par région (triées par médiane)",
+       x = "Niveau d'Engagement (Theta)",
+       y = "") +
+  theme(
+    plot.title = element_text(face = "bold", size = 14),
+    axis.text.y = element_text(size = 11, face = "bold"), # Gros texte pour les régions
+  )
+```
+
+Les régions sont triées par niveau d'engagement médian, c'est-à_dire la région avec le niveau d'engagement médian le plus élevé est en haut et celle avec le niveau d'engagement médian le plus faible est en bas. En regardant la distribution par région, on voit que les courbes ont perdu leur aspect de cloche. Cela est due au fait que dans chaque région il y a moins d'individus et donc la forme de la courbe est plus sensible aux petites variations.
