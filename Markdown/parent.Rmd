@@ -139,7 +139,9 @@ h5 > .header-section-number {
 
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = F, warning = F, fig.height=3, fig.width=4)
+knitr::opts_chunk$set(echo = TRUE, message = F, warning = F, fig.align = "center", # Centrer les figures
+  fig.width = 12, # Largeur des figures
+  fig.height = 8 )
 ```
 
 
@@ -152,12 +154,26 @@ r.files.vec <- r.files.vec[grepl(".Rmd", r.files.vec)]
 ```
 
 # Seance 1
-```{r child = 'sections/cours1.Rmd'}
+```{r child = 'Markdown/sections/cours1.Rmd'}
 
 ```
 
-# Seance 2 
-```{r child = 'sections/cours2_cours3.Rmd'}
+# Seance 2 (cours 2 et 3)
+```{r child = 'Markdown/sections/cours2_cours3.Rmd'}
 
 ```
+
+# Seance 3 (cours 4 et 5)
+
+```{r child = 'Markdown/sections/cours4_cours5.Rmd'}
+
+```
+
+
+# Seance 6 (TD en autonomie)
+```{r child = 'Markdown/sections/TD_autonomie.rmarkdown'}
+
+```
+
+
 
